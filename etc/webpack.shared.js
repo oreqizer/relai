@@ -3,6 +3,7 @@ const ExtractText = require("extract-text-webpack-plugin");
 
 const babelOptions = {
   presets: ["react", ["es2015", { modules: false, loose: true }], "stage-3"],
+  plugins: ["relay"],
 };
 
 module.exports = {
