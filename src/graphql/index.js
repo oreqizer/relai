@@ -1,6 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 const express = require("express");
+const cors = require("cors");
+const morgan = require("morgan");
 const graphqlHTTP = require("express-graphql");
 const { buildSchema } = require("graphql");
 const crypto = require("crypto");
@@ -54,6 +56,10 @@ const root = {
 };
 
 const app = express();
+
+app.use(cors());
+
+app.use(morgan("tiny"));
 
 app.use(
   "/graphql",
