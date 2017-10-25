@@ -15,7 +15,6 @@
     "lint": "eslint '**/*.{js,jsx}'",
     "flow": "flow",
     "flow:check": "flow check",
-    "flow:install": "flow-typed install",
     "clean": "rimraf .tmp dist",
     "clean:server": "rimraf dist/server/index.css"
   },

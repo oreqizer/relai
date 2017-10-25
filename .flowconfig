@@ -1,4 +1,12 @@
 [ignore]
+<PROJECT_ROOT>/dist/.*
+<PROJECT_ROOT>/etc/.*
+
+.*/node_modules/eslint-plugin-jsx-a11y/.*
+.*/node_modules/styled-components/.*
+.*/node_modules/radium/.*
+.*/node_modules/immutable/.*
+.*/node_modules/react-motion/.*
 
 [include]
 
