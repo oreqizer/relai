@@ -1,9 +1,8 @@
 /* @flow */
 /* eslint-disable react/no-danger */
-import React from 'react';
+import React from "react";
 
-import { assets } from '../config';
-
+import { assets } from "../config";
 
 type Props = {
   root: string,

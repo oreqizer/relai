@@ -1,0 +1,24 @@
+{
+  "parser": "babel-eslint",
+  "extends": [
+    "airbnb",
+    "plugin:flowtype/recommended",
+    "prettier",
+    "prettier/flowtype",
+    "prettier/react"
+  ],
+  "plugins": [
+    "flowtype",
+    "prettier"
+  ],
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "etc/webpack.build.js"
+      }
+    }
+  },
+  "rules": {
+    "prettier/prettier": "error"
+  }
+}
