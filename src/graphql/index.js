@@ -1,33 +1,12 @@
+const fs = require("fs");
+const path = require("path");
 const express = require("express");
 const graphqlHTTP = require("express-graphql");
 const { buildSchema } = require("graphql");
 const crypto = require("crypto");
 
-// Construct a schema, using GraphQL schema language
-const schema = buildSchema(`
-  input TodoInput {
-    author: String!
-    text: String!
-    complete: Boolean!
-  }
-
-  type Todo {
-    id: ID!
-    author: String!
-    text: String!
-    complete: Boolean!
-  }
-  
-  type Query {
-    getTodos(author: String!): [Todo]!
-  }
-  
-  type Mutation {
-    createTodo(input: TodoInput): Todo
-    updateTodo(id: ID!, input: TodoInput): Todo
-    deleteTodo(id: ID!, author: String!): Todo
-  }
-`);
+const schemaString = String(fs.readFileSync(path.join(__dirname, "schema.graphql")));
+const schema = buildSchema(schemaString);
 
 // If it had any complex fields, we'd put them on this object.
 const newTodo = (id, { author, text, complete }) => ({
