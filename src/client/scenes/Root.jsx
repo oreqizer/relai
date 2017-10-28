@@ -14,10 +14,15 @@ const Container = styled.div`
 
 type State = {
   user: string,
-  viewTodos: false,
+  viewTodos: boolean,
 };
 
 class Root extends React.Component<{}, State> {
+  state = {
+    user: "",
+    viewTodos: false,
+  };
+
   handleChange = user => {
     this.setState({ user });
   };
