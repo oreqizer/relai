@@ -1,3 +1,3 @@
 import "./app";
 
-import "./styles/fonts.css";
+import "./styles/normalize.css";
