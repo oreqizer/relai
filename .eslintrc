@@ -19,6 +19,10 @@
     }
   },
   "rules": {
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+
+    // OFF
+    // ---
+    "camelcase": "off" // graphql
   }
 }

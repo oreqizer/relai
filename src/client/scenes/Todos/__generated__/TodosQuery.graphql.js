@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash da8a889c205c8cf189bb8eb5720b1e54
+ * @relayHash 923fcd5c1d723bd8057287fa8cf5b773
  */
 
 /* eslint-disable */
@@ -10,11 +10,7 @@
 /*::
 import type {ConcreteBatch} from 'relay-runtime';
 export type TodosQueryResponse = {|
-  +todos: $ReadOnlyArray<?{|
-    +id: string;
-    +text: string;
-    +complete: boolean;
-  |}>;
+  +todos: $ReadOnlyArray<?{| |}>;
 |};
 */
 
@@ -24,10 +20,15 @@ query TodosQuery(
   $user: String!
 ) {
   todos(author: $user) {
+    ...TodoItem_item
     id
-    text
-    complete
   }
+}
+
+fragment TodoItem_item on Todo {
+  id
+  text
+  complete
 }
 */
 
@@ -61,25 +62,9 @@ const batch /*: ConcreteBatch*/ = {
         "plural": true,
         "selections": [
           {
-            "kind": "ScalarField",
-            "alias": null,
-            "args": null,
-            "name": "id",
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "args": null,
-            "name": "text",
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "args": null,
-            "name": "complete",
-            "storageKey": null
+            "kind": "FragmentSpread",
+            "name": "TodoItem_item",
+            "args": null
           }
         ],
         "storageKey": null
@@ -127,25 +112,31 @@ const batch /*: ConcreteBatch*/ = {
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
-            "alias": null,
-            "args": null,
-            "name": "text",
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "args": null,
-            "name": "complete",
-            "storageKey": null
+            "kind": "InlineFragment",
+            "type": "Todo",
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "text",
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "complete",
+                "storageKey": null
+              }
+            ]
           }
         ],
         "storageKey": null
       }
     ]
   },
-  "text": "query TodosQuery(\n  $user: String!\n) {\n  todos(author: $user) {\n    id\n    text\n    complete\n  }\n}\n"
+  "text": "query TodosQuery(\n  $user: String!\n) {\n  todos(author: $user) {\n    ...TodoItem_item\n    id\n  }\n}\n\nfragment TodoItem_item on Todo {\n  id\n  text\n  complete\n}\n"
 };
 
 module.exports = batch;
