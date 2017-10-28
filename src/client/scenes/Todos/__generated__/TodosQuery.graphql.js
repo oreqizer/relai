@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 3e6d8f39a3af48377d5067a56a5ed682
+ * @relayHash da8a889c205c8cf189bb8eb5720b1e54
  */
 
 /* eslint-disable */
@@ -10,7 +10,7 @@
 /*::
 import type {ConcreteBatch} from 'relay-runtime';
 export type TodosQueryResponse = {|
-  +getTodos: $ReadOnlyArray<?{|
+  +todos: $ReadOnlyArray<?{|
     +id: string;
     +text: string;
     +complete: boolean;
@@ -23,7 +23,7 @@ export type TodosQueryResponse = {|
 query TodosQuery(
   $user: String!
 ) {
-  getTodos(author: $user) {
+  todos(author: $user) {
     id
     text
     complete
@@ -57,7 +57,7 @@ const batch /*: ConcreteBatch*/ = {
           }
         ],
         "concreteType": "Todo",
-        "name": "getTodos",
+        "name": "todos",
         "plural": true,
         "selections": [
           {
@@ -116,7 +116,7 @@ const batch /*: ConcreteBatch*/ = {
           }
         ],
         "concreteType": "Todo",
-        "name": "getTodos",
+        "name": "todos",
         "plural": true,
         "selections": [
           {
@@ -145,7 +145,7 @@ const batch /*: ConcreteBatch*/ = {
       }
     ]
   },
-  "text": "query TodosQuery(\n  $user: String!\n) {\n  getTodos(author: $user) {\n    id\n    text\n    complete\n  }\n}\n"
+  "text": "query TodosQuery(\n  $user: String!\n) {\n  todos(author: $user) {\n    id\n    text\n    complete\n  }\n}\n"
 };
 
 module.exports = batch;

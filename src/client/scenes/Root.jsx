@@ -17,7 +17,7 @@ type State = {
   viewTodos: boolean,
 };
 
-class Root extends React.Component<{}, State> {
+export default class Root extends React.Component<{}, State> {
   state = {
     user: "",
     viewTodos: false,
@@ -49,5 +49,3 @@ class Root extends React.Component<{}, State> {
     );
   }
 }
-
-export default Root;

@@ -3,14 +3,12 @@
 import React from "react";
 import { QueryRenderer, graphql } from "react-relay";
 
-import Input from "client/components/Input";
 import Title from "client/components/Title";
+import TodoList from "./components/TodoList";
 import environment from "./services/environment";
 
 type Props = {|
   user: string,
-  onChange: string => any,
-  onSwitchView: () => any,
 |};
 
 const Todos = (props: Props) => (
@@ -20,7 +18,7 @@ const Todos = (props: Props) => (
       environment={environment}
       query={graphql`
         query TodosQuery($user: String!) {
-          getTodos(author: $user) {
+          todos(author: $user) {
             id
             text
             complete
@@ -35,8 +33,7 @@ const Todos = (props: Props) => (
         }
 
         if (res.props) {
-          console.log(res.props);
-          return <div>TODOS</div>;
+          return <TodoList todos={res.props.todos} />;
         }
 
         return null;

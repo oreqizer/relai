@@ -22,7 +22,7 @@ const newTodo = (id, { author, text, complete }) => ({
 const fakeDatabase = {};
 
 const root = {
-  getTodos({ author }) {
+  todos({ author }) {
     return Object.keys(fakeDatabase)
       .map(id => fakeDatabase[id])
       .filter(todo => todo.author === author);
