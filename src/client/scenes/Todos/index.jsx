@@ -1,5 +1,4 @@
 /* @flow */
-/* @flow */
 import React from "react";
 import { QueryRenderer, graphql } from "react-relay";
 
