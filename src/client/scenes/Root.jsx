@@ -40,7 +40,7 @@ class Root extends React.Component<{}, State> {
           <Todos user={user} onSwitchView={this.handleSwitchView} />
         ) : (
           <UserInput
-            user={user}
+            value={user}
             onChange={this.handleChange}
             onSwitchView={this.handleSwitchView}
           />

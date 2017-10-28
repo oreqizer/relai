@@ -3,7 +3,8 @@
 import React from "react";
 import styled from "styled-components";
 
-const Input = styled.input``;
+import Input from "client/components/Input";
+import Title from "client/components/Title";
 
 type Props = {|
   user: string,
@@ -11,6 +12,10 @@ type Props = {|
   onSwitchView: () => any,
 |};
 
-const UserInput = (props: Props) => <div>todos</div>;
+const UserInput = (props: Props) => (
+  <div>
+    <Title>todos</Title>
+  </div>
+);
 
 export default UserInput;
