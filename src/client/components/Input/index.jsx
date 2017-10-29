@@ -17,19 +17,7 @@ const Input = styled.input`
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  &::webkit-input-placeholder {
-    font-style: italic;
-    font-weight: 300;
-    color: #e6e6e6;
-  }
-
-  &::-moz-placeholder {
-    font-style: italic;
-    font-weight: 300;
-    color: #e6e6e6;
-  }
-
-  &::input-placeholder {
+  &::placeholder {
     font-style: italic;
     font-weight: 300;
     color: #e6e6e6;
