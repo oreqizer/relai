@@ -11,11 +11,13 @@ type Props = {|
 |};
 
 class UserInput extends React.PureComponent<Props> {
-  handleChange = ev => {
-    this.props.onChange(ev.target.value);
+  handleChange = (ev: SyntheticEvent<HTMLInputElement>) => {
+    if (ev.target instanceof HTMLInputElement) {
+      this.props.onChange(ev.target.value);
+    }
   };
 
-  handleKeyPress = ev => {
+  handleKeyPress = (ev: SyntheticEvent<HTMLInputElement>) => {
     if (ev.key === "Enter") {
       this.props.onSwitchView();
     }
@@ -27,7 +29,12 @@ class UserInput extends React.PureComponent<Props> {
     return (
       <div>
         <Title>user</Title>
-        <Input value={value} onChange={this.handleChange} onKeyPress={this.handleKeyPress} />
+        <Input
+          value={value}
+          placeholder="Your username"
+          onChange={this.handleChange}
+          onKeyPress={this.handleKeyPress}
+        />
       </div>
     );
   }
