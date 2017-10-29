@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import Input from "client/components/Input";
 import TodoItem from "../TodoItem";
+import ToggleAll from "../ToggleAll";
 import type { TodoItem_item } from "../TodoItem/__generated__/TodoItem_item.graphql";
 
 const Section = styled.section`
@@ -14,23 +15,16 @@ const Section = styled.section`
 `;
 
 const NewTodoInput = Input.extend`
-  &::-webkit-input-placeholder {
-    font-style: italic;
-    font-weight: 300;
-    color: #e6e6e6;
-  }
+  padding: 16px 16px 16px 60px;
+  border: none;
+  background: rgba(0, 0, 0, 0.003);
+  box-shadow: inset 0 -2px 1px rgba(0, 0, 0, 0.03);
+`;
 
-  &::-moz-placeholder {
-    font-style: italic;
-    font-weight: 300;
-    color: #e6e6e6;
-  }
-
-  &::input-placeholder {
-    font-style: italic;
-    font-weight: 300;
-    color: #e6e6e6;
-  }
+const Main = styled.section`
+  position: relative;
+  z-index: 2;
+  border-top: 1px solid #e6e6e6;
 `;
 
 type Props = {|
@@ -39,10 +33,11 @@ type Props = {|
 
 type State = {|
   value: string,
+  allSelected: boolean,
 |};
 
 export default class TodoList extends React.PureComponent<Props, State> {
-  state = { value: "" };
+  state = { value: "", allSelected: false };
 
   handleChange = (ev: SyntheticEvent<HTMLInputElement>) => {
     if (ev.target instanceof HTMLInputElement) {
@@ -50,15 +45,36 @@ export default class TodoList extends React.PureComponent<Props, State> {
     }
   };
 
+  handleKeyPress = (ev: SyntheticEvent<HTMLInputElement>) => {
+    if (ev.key === "Enter") {
+      // TODO create todo
+      this.setState({ value: "" });
+    }
+  };
+
+  handleToggleAll = (ev: SyntheticEvent<HTMLInputElement>) => {
+    if (ev.target instanceof HTMLInputElement) {
+      this.setState({ allSelected: ev.target.checked });
+    }
+  };
+
   render() {
-    const { value } = this.state;
+    const { value, allSelected } = this.state;
     const { todos } = this.props;
 
     return (
       <Section>
         <header>
-          <NewTodoInput value={value} onChange={this.handleChange} />
-          {todos.map(item => <TodoItem key={item.id} item={item} />)}
+          <NewTodoInput
+            value={value}
+            placeholder="What needs to be done?"
+            onChange={this.handleChange}
+            onKeyPress={this.handleKeyPress}
+          />
+          <Main>
+            <ToggleAll checked={allSelected} onChange={this.handleToggleAll} />
+            {todos.map(item => <TodoItem key={item.id} item={item} />)}
+          </Main>
         </header>
       </Section>
     );
