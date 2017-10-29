@@ -13,7 +13,7 @@ class TodoItem extends React.PureComponent<Props> {
     const { item } = this.props;
 
     console.log("TodoItem:", item);
-    return <div>{item.text}</div>;
+    return <li>{item.text}</li>;
   }
 }
 

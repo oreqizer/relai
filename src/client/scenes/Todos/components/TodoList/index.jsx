@@ -27,6 +27,12 @@ const Main = styled.section`
   border-top: 1px solid #e6e6e6;
 `;
 
+const Ul = styled.ul`
+  margin: 0;
+  padding: 0;
+  list-style: none;
+`;
+
 type Props = {|
   todos: TodoItem_item[],
 |};
@@ -37,7 +43,10 @@ type State = {|
 |};
 
 export default class TodoList extends React.PureComponent<Props, State> {
-  state = { value: "", allSelected: false };
+  state = {
+    value: "",
+    allSelected: false,
+  };
 
   handleChange = (ev: SyntheticEvent<HTMLInputElement>) => {
     if (ev.target instanceof HTMLInputElement) {
@@ -73,7 +82,7 @@ export default class TodoList extends React.PureComponent<Props, State> {
           />
           <Main>
             <ToggleAll checked={allSelected} onChange={this.handleToggleAll} />
-            {todos.map(item => <TodoItem key={item.id} item={item} />)}
+            <Ul>{todos.map(item => <TodoItem key={item.id} item={item} />)}</Ul>
           </Main>
         </header>
       </Section>
