@@ -3,7 +3,7 @@ import React from "react";
 import { QueryRenderer, graphql } from "react-relay";
 
 import Title from "client/components/Title";
-import TodoItem from "./components/TodoItem";
+import TodoList from "./components/TodoList";
 import environment from "./services/environment";
 
 type Props = {|
@@ -30,7 +30,7 @@ const Todos = (props: Props) => (
         }
 
         if (res.props) {
-          return res.props.todos.map(todo => <TodoItem key={todo.id} item={todo} />);
+          return <TodoList todos={res.props.todos} />;
         }
 
         return null;
