@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash c818ea2b51ff45aba9813a14ce03e771
+ * @relayHash 5be6690d65878d11fd402415f42a5e85
  */
 
 /* eslint-disable */
@@ -14,6 +14,7 @@ export type createTodoMutationVariables = {|
     author: string;
     text: string;
     complete: boolean;
+    clientMutationId: string;
   };
 |};
 export type createTodoMutationResponse = {|

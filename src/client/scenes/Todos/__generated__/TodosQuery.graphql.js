@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 5a31c389181f4b474ec34b2d6362a96f
+ * @relayHash 3200e3333076833f0a5d0e5d76e34976
  */
 
 /* eslint-disable */
@@ -136,18 +136,24 @@ const batch /*: ConcreteBatch*/ = {
                     "storageKey": null
                   },
                   {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "args": null,
-                    "name": "text",
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "args": null,
-                    "name": "complete",
-                    "storageKey": null
+                    "kind": "InlineFragment",
+                    "type": "Todo",
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "args": null,
+                        "name": "text",
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "args": null,
+                        "name": "complete",
+                        "storageKey": null
+                      }
+                    ]
                   }
                 ],
                 "storageKey": null
