@@ -1,22 +1,58 @@
-input TodoInput {
-    author: String!
-    text: String!
-    complete: Boolean!
+# Relay Global Object Identification Specification - @objects
+# https://facebook.github.io/relay/graphql/objectidentification.htm
+interface Node {
+  id: ID!
 }
 
+# Relay Cursor Connections Specification - @connections
+# https://facebook.github.io/relay/graphql/connections.htm
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+# My stuff
+# --------
+
 type Todo {
-    id: ID!
-    author: String!
-    text: String!
-    complete: Boolean!
+  id: ID!
+  author: String!
+  text: String!
+  complete: Boolean!
+}
+
+type TodoConnection {
+  edges: [Todo] # @connections
+  pageInfo: PageInfo!
 }
 
 type Query {
-    todos(author: String!): [Todo]!
+  todos(author: String!): [Todo]!
+  node(id: ID!): Node # @objects
+}
+
+input CreateTodoInput {
+  author: String!
+  text: String!
+  complete: Boolean!
+}
+
+input UpdateTodoInput {
+  text: String!
+  complete: Boolean!
+}
+
+input TodoPayload {
+  todo: Todo
+  # Relay Input Object Mutations Specification
+  # https://facebook.github.io/relay/graphql/mutations.htm
+  clientMutationId: String!
 }
 
 type Mutation {
-    createTodo(input: TodoInput): Todo
-    updateTodo(id: ID!, input: TodoInput): Todo
-    deleteTodo(id: ID!, author: String!): Todo
+  createTodo(input: CreateTodoInput): TodoPayload
+  updateTodo(id: ID!, input: UpdateTodoInput): TodoPayload
+  deleteTodo(id: ID!, author: String!): Todo
 }
