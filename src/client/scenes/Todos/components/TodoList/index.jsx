@@ -90,7 +90,7 @@ class TodoList extends React.PureComponent<Props, State> {
           />
           <Main>
             <ToggleAll checked={false} onChange={this.handleToggleAll} />
-            <Ul>{list.edges.map(item => <TodoItem key={item.id} item={item} />)}</Ul>
+            <Ul>{list.edges.map(edge => <TodoItem key={edge.node.id} item={edge.node} />)}</Ul>
           </Main>
         </header>
       </Section>
