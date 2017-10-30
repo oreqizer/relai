@@ -47,7 +47,13 @@ function createTodo(environment: Environment, author: string, text: string) {
       sharedUpdater(store, todoEdge);
     },
     optimisticUpdater: store => {
-      // TODO
+      const id = `client:createTodo:${mutationId}`;
+      const node = store.create(id, "Todo");
+      node.setValue(text, "text");
+      node.setValue(id, "id");
+      const newEdge = store.create(`client:createEdge:${mutationId}`, "TodoEdge");
+      newEdge.setLinkedRecord(node, "node");
+      sharedUpdater(store, newEdge);
     },
   });
 }
