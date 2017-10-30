@@ -15,6 +15,21 @@ const Li = styled.li`
   &:last-child {
     border-bottom: none;
   }
+
+  ${props =>
+    props.editing &&
+    css`
+      border-bottom: none;
+      padding: 0;
+    `};
+`;
+
+const EditInput = Input.extend`
+  width: 507px;
+  padding: 12px 16px;
+  margin: 0 0 0 43px;
+  border: 1px solid #999;
+  box-shadow: inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2);
 `;
 
 const Label = styled.label`
@@ -70,6 +85,8 @@ class TodoItem extends React.PureComponent<Props, State> {
     value: "",
   };
 
+  input: ?HTMLInputElement;
+
   handleToggle = (ev: SyntheticEvent<HTMLInputElement>) => {
     if (ev.target instanceof HTMLInputElement) {
       // TODO toggle complete
@@ -77,7 +94,11 @@ class TodoItem extends React.PureComponent<Props, State> {
   };
 
   handleInitEdit = () => {
-    this.setState({ value: this.props.item.text, editing: true });
+    this.setState({ value: this.props.item.text, editing: true }, () => {
+      if (this.input) {
+        this.input.focus();
+      }
+    });
   };
 
   handleChange = (ev: SyntheticEvent<HTMLInputElement>) => {
@@ -108,11 +129,14 @@ class TodoItem extends React.PureComponent<Props, State> {
     const { editing, value } = this.state;
 
     return (
-      <Li>
+      <Li editing={editing}>
         {editing ? (
-          <Input
+          <EditInput
             id={item.id}
             value={value}
+            innerRef={node => {
+              this.input = node;
+            }}
             onChange={this.handleChange}
             onKeyDown={this.handleKeyDown}
             onBlur={this.handleEdit}
