@@ -3,9 +3,11 @@ import { commitMutation, graphql } from "react-relay";
 import type { Environment } from "react-relay";
 
 const mutation = graphql`
-  mutation CreateTodoMutation($input: CreateTodoInput!) {
-    createTodo(data: $input) {
-      id
+  mutation createTodoMutation($input: CreateTodoInput!) {
+    createTodo(input: $input) {
+      todo {
+        id
+      }
       clientMutationId
     }
   }
