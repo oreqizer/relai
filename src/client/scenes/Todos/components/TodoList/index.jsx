@@ -1,11 +1,14 @@
 /* @flow */
 import * as React from "react";
 import styled from "styled-components";
+import { createFragmentContainer, graphql } from "react-relay";
+import type { RelayProp } from "react-relay";
 
 import Input from "client/components/Input";
 import TodoItem from "../TodoItem";
 import ToggleAll from "../ToggleAll";
 import type { TodoItem_item } from "../TodoItem/__generated__/TodoItem_item.graphql";
+import createTodo from "./mutations/createTodo";
 
 const Section = styled.section`
   background: #fff;
@@ -34,7 +37,9 @@ const Ul = styled.ul`
 `;
 
 type Props = {|
+  user: string,
   todos: TodoItem_item[],
+  relay: RelayProp,
   // TODO compute all checked
 |};
 
@@ -42,7 +47,7 @@ type State = {|
   value: string,
 |};
 
-export default class TodoList extends React.PureComponent<Props, State> {
+class TodoList extends React.PureComponent<Props, State> {
   state = { value: "" };
 
   handleChange = (ev: SyntheticEvent<HTMLInputElement>) => {
@@ -52,8 +57,10 @@ export default class TodoList extends React.PureComponent<Props, State> {
   };
 
   handleKeyPress = (ev: SyntheticEvent<HTMLInputElement>) => {
-    if (ev.key === "Enter") {
-      // TODO create todo
+    const { user, relay: { environment } } = this.props;
+
+    if (ev.key === "Enter" && ev.target instanceof HTMLInputElement) {
+      createTodo(environment, user, ev.target.value);
       this.setState({ value: "" });
     }
   };
@@ -86,3 +93,16 @@ export default class TodoList extends React.PureComponent<Props, State> {
     );
   }
 }
+
+export default createFragmentContainer(
+  TodoList,
+  graphql`
+    fragment TodoList_list on TodoConnection {
+      edges {
+        node {
+          ...TodoItem_item
+        }
+      }
+    }
+  `,
+);

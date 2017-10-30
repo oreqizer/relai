@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 923fcd5c1d723bd8057287fa8cf5b773
+ * @relayHash 5a31c389181f4b474ec34b2d6362a96f
  */
 
 /* eslint-disable */
@@ -10,7 +10,7 @@
 /*::
 import type {ConcreteBatch} from 'relay-runtime';
 export type TodosQueryResponse = {|
-  +todos: $ReadOnlyArray<?{| |}>;
+  +todos: ?{| |};
 |};
 */
 
@@ -20,8 +20,16 @@ query TodosQuery(
   $user: String!
 ) {
   todos(author: $user) {
-    ...TodoItem_item
-    id
+    ...TodoList_list
+  }
+}
+
+fragment TodoList_list on TodoConnection {
+  edges {
+    node {
+      ...TodoItem_item
+      id
+    }
   }
 }
 
@@ -57,13 +65,13 @@ const batch /*: ConcreteBatch*/ = {
             "type": "String!"
           }
         ],
-        "concreteType": "Todo",
+        "concreteType": "TodoConnection",
         "name": "todos",
-        "plural": true,
+        "plural": false,
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "TodoItem_item",
+            "name": "TodoList_list",
             "args": null
           }
         ],
@@ -100,43 +108,59 @@ const batch /*: ConcreteBatch*/ = {
             "type": "String!"
           }
         ],
-        "concreteType": "Todo",
+        "concreteType": "TodoConnection",
         "name": "todos",
-        "plural": true,
+        "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
+            "kind": "LinkedField",
             "alias": null,
             "args": null,
-            "name": "id",
-            "storageKey": null
-          },
-          {
-            "kind": "InlineFragment",
-            "type": "Todo",
+            "concreteType": "TodoEdge",
+            "name": "edges",
+            "plural": true,
             "selections": [
               {
-                "kind": "ScalarField",
+                "kind": "LinkedField",
                 "alias": null,
                 "args": null,
-                "name": "text",
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "args": null,
-                "name": "complete",
+                "concreteType": "Todo",
+                "name": "node",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "args": null,
+                    "name": "id",
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "args": null,
+                    "name": "text",
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "args": null,
+                    "name": "complete",
+                    "storageKey": null
+                  }
+                ],
                 "storageKey": null
               }
-            ]
+            ],
+            "storageKey": null
           }
         ],
         "storageKey": null
       }
     ]
   },
-  "text": "query TodosQuery(\n  $user: String!\n) {\n  todos(author: $user) {\n    ...TodoItem_item\n    id\n  }\n}\n\nfragment TodoItem_item on Todo {\n  id\n  text\n  complete\n}\n"
+  "text": "query TodosQuery(\n  $user: String!\n) {\n  todos(author: $user) {\n    ...TodoList_list\n  }\n}\n\nfragment TodoList_list on TodoConnection {\n  edges {\n    node {\n      ...TodoItem_item\n      id\n    }\n  }\n}\n\nfragment TodoItem_item on Todo {\n  id\n  text\n  complete\n}\n"
 };
 
 module.exports = batch;

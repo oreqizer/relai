@@ -18,7 +18,7 @@ const Todos = (props: Props) => (
       query={graphql`
         query TodosQuery($user: String!) {
           todos(author: $user) {
-            ...TodoItem_item
+            ...TodoList_list
           }
         }
       `}
@@ -30,7 +30,8 @@ const Todos = (props: Props) => (
         }
 
         if (res.props) {
-          return <TodoList todos={res.props.todos} />;
+          console.log(res.props);
+          return <TodoList todos={res.props.todos} user={props.user} />;
         }
 
         return null;

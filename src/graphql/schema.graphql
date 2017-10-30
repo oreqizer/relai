@@ -13,9 +13,6 @@ type PageInfo {
   endCursor: String
 }
 
-# My stuff
-# --------
-
 type Todo {
   id: ID!
   author: String!
@@ -23,13 +20,20 @@ type Todo {
   complete: Boolean!
 }
 
+# @connections
 type TodoConnection {
-  edges: [Todo] # @connections
+  edges: [TodoEdge]
   pageInfo: PageInfo!
 }
 
+# @connections
+type TodoEdge {
+  cursor: String!
+  node: Todo
+}
+
 type Query {
-  todos(author: String!): [Todo]!
+  todos(author: String!): TodoConnection # @connections
   node(id: ID!): Node # @objects
 }
 
@@ -44,7 +48,7 @@ input UpdateTodoInput {
   complete: Boolean!
 }
 
-input TodoPayload {
+type TodoPayload {
   todo: Todo
   # Relay Input Object Mutations Specification
   # https://facebook.github.io/relay/graphql/mutations.htm
