@@ -75,7 +75,7 @@ class TodoList extends React.PureComponent<Props, State> {
     const { value } = this.state;
     const { list } = this.props;
 
-    if (!list.edges) {
+    if (!list.todos.edges) {
       return null;
     }
 
@@ -90,7 +90,7 @@ class TodoList extends React.PureComponent<Props, State> {
           />
           <Main>
             <ToggleAll checked={false} onChange={this.handleToggleAll} />
-            <Ul>{list.edges.map(({ node }) => <TodoItem key={node.id} item={node} />)}</Ul>
+            <Ul>{list.todos.edges.map(({ node }) => <TodoItem key={node.id} item={node} />)}</Ul>
           </Main>
         </header>
       </Section>
@@ -101,11 +101,13 @@ class TodoList extends React.PureComponent<Props, State> {
 export default createFragmentContainer(
   TodoList,
   graphql`
-    fragment TodoList_list on TodoConnection {
-      edges {
-        node {
-          id
-          ...TodoItem_item
+    fragment TodoList_list on Query {
+      todos(author: $user, first: 100000) @connection(key: "TodoList_todos", filters: []) {
+        edges {
+          node {
+            id
+            ...TodoItem_item
+          }
         }
       }
     }

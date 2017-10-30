@@ -51,7 +51,10 @@ const root = {
     fakeDatabase[id] = todo;
     position += 1;
     return {
-      todo,
+      todoEdge: {
+        cursor: todo.id,
+        node: todo,
+      },
       clientMutationId: input.clientMutationId,
     };
   },
@@ -63,7 +66,10 @@ const root = {
     const todo = newTodo(input.id, input);
     fakeDatabase[input.id] = todo;
     return {
-      todo,
+      todoEdge: {
+        cursor: todo.id,
+        node: todo,
+      },
       clientMutationId: input.clientMutationId,
     };
   },
@@ -75,7 +81,10 @@ const root = {
     const todo = fakeDatabase[input.id];
     delete fakeDatabase[input.id];
     return {
-      todo,
+      todoEdge: {
+        cursor: todo.id,
+        node: todo,
+      },
       clientMutationId: input.clientMutationId,
     };
   },

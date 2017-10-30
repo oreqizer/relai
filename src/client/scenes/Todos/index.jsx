@@ -17,9 +17,7 @@ const Todos = (props: Props) => (
       environment={environment}
       query={graphql`
         query TodosQuery($user: String!) {
-          todos(author: $user) {
-            ...TodoList_list
-          }
+          ...TodoList_list
         }
       `}
       variables={{ user: props.user }}
@@ -30,7 +28,7 @@ const Todos = (props: Props) => (
         }
 
         if (res.props) {
-          return <TodoList list={res.props.todos} user={props.user} />;
+          return <TodoList list={res.props} user={props.user} />;
         }
 
         return null;

@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash e15b7c6c23876a9c89c262234f4117e5
+ * @relayHash e696a9ca93a2359db6b35d9b6cf2fb36
  */
 
 /* eslint-disable */
@@ -19,11 +19,13 @@ export type createTodoMutationVariables = {|
 |};
 export type createTodoMutationResponse = {|
   +createTodo: ?{|
-    +todo: ?{|
-      +id: string;
-      +author: string;
-      +text: string;
-      +complete: boolean;
+    +todoEdge: ?{|
+      +cursor: string;
+      +node: {|
+        +id: string;
+        +text: string;
+        +complete: boolean;
+      |};
     |};
     +clientMutationId: string;
   |};
@@ -36,11 +38,13 @@ mutation createTodoMutation(
   $input: CreateTodoInput!
 ) {
   createTodo(input: $input) {
-    todo {
-      id
-      author
-      text
-      complete
+    todoEdge {
+      cursor
+      node {
+        id
+        text
+        complete
+      }
     }
     clientMutationId
   }
@@ -80,36 +84,47 @@ const batch /*: ConcreteBatch*/ = {
             "kind": "LinkedField",
             "alias": null,
             "args": null,
-            "concreteType": "Todo",
-            "name": "todo",
+            "concreteType": "TodoEdge",
+            "name": "todoEdge",
             "plural": false,
             "selections": [
               {
                 "kind": "ScalarField",
                 "alias": null,
                 "args": null,
-                "name": "id",
+                "name": "cursor",
                 "storageKey": null
               },
               {
-                "kind": "ScalarField",
+                "kind": "LinkedField",
                 "alias": null,
                 "args": null,
-                "name": "author",
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "args": null,
-                "name": "text",
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "args": null,
-                "name": "complete",
+                "concreteType": "Todo",
+                "name": "node",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "args": null,
+                    "name": "id",
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "args": null,
+                    "name": "text",
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "args": null,
+                    "name": "complete",
+                    "storageKey": null
+                  }
+                ],
                 "storageKey": null
               }
             ],
@@ -164,36 +179,47 @@ const batch /*: ConcreteBatch*/ = {
             "kind": "LinkedField",
             "alias": null,
             "args": null,
-            "concreteType": "Todo",
-            "name": "todo",
+            "concreteType": "TodoEdge",
+            "name": "todoEdge",
             "plural": false,
             "selections": [
               {
                 "kind": "ScalarField",
                 "alias": null,
                 "args": null,
-                "name": "id",
+                "name": "cursor",
                 "storageKey": null
               },
               {
-                "kind": "ScalarField",
+                "kind": "LinkedField",
                 "alias": null,
                 "args": null,
-                "name": "author",
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "args": null,
-                "name": "text",
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "args": null,
-                "name": "complete",
+                "concreteType": "Todo",
+                "name": "node",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "args": null,
+                    "name": "id",
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "args": null,
+                    "name": "text",
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "args": null,
+                    "name": "complete",
+                    "storageKey": null
+                  }
+                ],
                 "storageKey": null
               }
             ],
@@ -211,7 +237,7 @@ const batch /*: ConcreteBatch*/ = {
       }
     ]
   },
-  "text": "mutation createTodoMutation(\n  $input: CreateTodoInput!\n) {\n  createTodo(input: $input) {\n    todo {\n      id\n      author\n      text\n      complete\n    }\n    clientMutationId\n  }\n}\n"
+  "text": "mutation createTodoMutation(\n  $input: CreateTodoInput!\n) {\n  createTodo(input: $input) {\n    todoEdge {\n      cursor\n      node {\n        id\n        text\n        complete\n      }\n    }\n    clientMutationId\n  }\n}\n"
 };
 
 module.exports = batch;

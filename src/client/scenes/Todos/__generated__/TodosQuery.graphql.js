@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 4217b5f252d897da607bcd6e692b6e23
+ * @relayHash 52ba9d7458e3239a2f84f9d2308021cf
  */
 
 /* eslint-disable */
@@ -9,9 +9,7 @@
 
 /*::
 import type {ConcreteBatch} from 'relay-runtime';
-export type TodosQueryResponse = {|
-  +todos: ?{| |};
-|};
+export type TodosQueryResponse = {| |};
 */
 
 
@@ -19,16 +17,22 @@ export type TodosQueryResponse = {|
 query TodosQuery(
   $user: String!
 ) {
-  todos(author: $user) {
-    ...TodoList_list
-  }
+  ...TodoList_list
 }
 
-fragment TodoList_list on TodoConnection {
-  edges {
-    node {
-      id
-      ...TodoItem_item
+fragment TodoList_list on Query {
+  todos(author: $user, first: 100000) {
+    edges {
+      node {
+        __typename
+        id
+        ...TodoItem_item
+      }
+      cursor
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
     }
   }
 }
@@ -55,27 +59,9 @@ const batch /*: ConcreteBatch*/ = {
     "name": "TodosQuery",
     "selections": [
       {
-        "kind": "LinkedField",
-        "alias": null,
-        "args": [
-          {
-            "kind": "Variable",
-            "name": "author",
-            "variableName": "user",
-            "type": "String!"
-          }
-        ],
-        "concreteType": "TodoConnection",
-        "name": "todos",
-        "plural": false,
-        "selections": [
-          {
-            "kind": "FragmentSpread",
-            "name": "TodoList_list",
-            "args": null
-          }
-        ],
-        "storageKey": null
+        "kind": "FragmentSpread",
+        "name": "TodoList_list",
+        "args": null
       }
     ],
     "type": "Query"
@@ -106,6 +92,12 @@ const batch /*: ConcreteBatch*/ = {
             "name": "author",
             "variableName": "user",
             "type": "String!"
+          },
+          {
+            "kind": "Literal",
+            "name": "first",
+            "value": 100000,
+            "type": "Int"
           }
         ],
         "concreteType": "TodoConnection",
@@ -128,6 +120,13 @@ const batch /*: ConcreteBatch*/ = {
                 "name": "node",
                 "plural": false,
                 "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "args": null,
+                    "name": "__typename",
+                    "storageKey": null
+                  },
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -157,16 +156,70 @@ const batch /*: ConcreteBatch*/ = {
                   }
                 ],
                 "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "cursor",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "args": null,
+            "concreteType": "PageInfo",
+            "name": "pageInfo",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "endCursor",
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "hasNextPage",
+                "storageKey": null
               }
             ],
             "storageKey": null
           }
         ],
         "storageKey": null
+      },
+      {
+        "kind": "LinkedHandle",
+        "alias": null,
+        "args": [
+          {
+            "kind": "Variable",
+            "name": "author",
+            "variableName": "user",
+            "type": "String!"
+          },
+          {
+            "kind": "Literal",
+            "name": "first",
+            "value": 100000,
+            "type": "Int"
+          }
+        ],
+        "handle": "connection",
+        "name": "todos",
+        "key": "TodoList_todos",
+        "filters": []
       }
     ]
   },
-  "text": "query TodosQuery(\n  $user: String!\n) {\n  todos(author: $user) {\n    ...TodoList_list\n  }\n}\n\nfragment TodoList_list on TodoConnection {\n  edges {\n    node {\n      id\n      ...TodoItem_item\n    }\n  }\n}\n\nfragment TodoItem_item on Todo {\n  id\n  text\n  complete\n}\n"
+  "text": "query TodosQuery(\n  $user: String!\n) {\n  ...TodoList_list\n}\n\nfragment TodoList_list on Query {\n  todos(author: $user, first: 100000) {\n    edges {\n      node {\n        __typename\n        id\n        ...TodoItem_item\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment TodoItem_item on Todo {\n  id\n  text\n  complete\n}\n"
 };
 
 module.exports = batch;

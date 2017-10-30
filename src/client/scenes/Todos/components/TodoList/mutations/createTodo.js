@@ -1,21 +1,31 @@
 /* @flow */
 import { commitMutation, graphql } from "react-relay";
+import { ConnectionHandler } from "relay-runtime";
 import type { Environment } from "react-relay";
 import v4 from "uuid/v4";
 
 const mutation = graphql`
   mutation createTodoMutation($input: CreateTodoInput!) {
     createTodo(input: $input) {
-      todo {
-        id
-        author
-        text
-        complete
+      todoEdge {
+        cursor
+        node {
+          id
+          text
+          complete
+        }
       }
       clientMutationId
     }
   }
 `;
+
+function sharedUpdater(store, todoEdge) {
+  const root = store.getRoot();
+  const conn = ConnectionHandler.getConnection(root, "TodoList_todos");
+
+  ConnectionHandler.insertEdgeAfter(conn, todoEdge);
+}
 
 function createTodo(environment: Environment, author: string, text: string) {
   const mutationId = v4();
@@ -31,32 +41,14 @@ function createTodo(environment: Environment, author: string, text: string) {
   commitMutation(environment, {
     mutation,
     variables,
-    optimisticResponse: {
-      createTodo: {
-        todo: {
-          id: mutationId,
-          author,
-          text,
-          complete: false,
-        },
-        clientMutationId: mutationId,
-      },
+    updater: store => {
+      const mutationRoot = store.getRootField("createTodo");
+      const todoEdge = mutationRoot.getLinkedRecord("todoEdge");
+      sharedUpdater(store, todoEdge);
     },
-    configs: [
-      {
-        type: "RANGE_ADD",
-        parentID: "todos",
-        connectionInfo: [
-          {
-            key: "TodoList_list",
-            rangeBehavior: "append",
-          },
-        ],
-        edgeName: "todo",
-      },
-    ],
-    onCompleted: console.log,
-    onError: console.error,
+    optimisticUpdater: store => {
+      // TODO
+    },
   });
 }
 

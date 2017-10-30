@@ -9,6 +9,8 @@ interface Node {
 type PageInfo {
   hasNextPage: Boolean!
   hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
 }
 
 # Relay Input Object Mutations Specification - @mutation
@@ -59,7 +61,7 @@ input DeleteTodoInput {
 }
 
 type TodoPayload {
-  todo: Todo
+  todoEdge: TodoEdge
   clientMutationId: String! # @mutation
 }
 

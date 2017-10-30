@@ -9,48 +9,117 @@
 /*::
 import type {ConcreteFragment} from 'relay-runtime';
 export type TodoList_list = {|
-  +edges: ?$ReadOnlyArray<{|
-    +node: {|
-      +id: string;
-    |};
-  |}>;
+  +todos: ?{|
+    +edges: ?$ReadOnlyArray<{|
+      +node: {|
+        +id: string;
+      |};
+    |}>;
+  |};
 |};
 */
 
 
 const fragment /*: ConcreteFragment*/ = {
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "kind": "RootArgument",
+      "name": "user",
+      "type": "String!"
+    }
+  ],
   "kind": "Fragment",
-  "metadata": null,
+  "metadata": {
+    "connection": [
+      {
+        "count": null,
+        "cursor": null,
+        "direction": "forward",
+        "path": [
+          "todos"
+        ]
+      }
+    ]
+  },
   "name": "TodoList_list",
   "selections": [
     {
       "kind": "LinkedField",
-      "alias": null,
+      "alias": "todos",
       "args": null,
-      "concreteType": "TodoEdge",
-      "name": "edges",
-      "plural": true,
+      "concreteType": "TodoConnection",
+      "name": "__TodoList_todos_connection",
+      "plural": false,
       "selections": [
         {
           "kind": "LinkedField",
           "alias": null,
           "args": null,
-          "concreteType": "Todo",
-          "name": "node",
+          "concreteType": "TodoEdge",
+          "name": "edges",
+          "plural": true,
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "args": null,
+              "concreteType": "Todo",
+              "name": "node",
+              "plural": false,
+              "selections": [
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "args": null,
+                  "name": "id",
+                  "storageKey": null
+                },
+                {
+                  "kind": "FragmentSpread",
+                  "name": "TodoItem_item",
+                  "args": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "args": null,
+                  "name": "__typename",
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "args": null,
+              "name": "cursor",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "args": null,
+          "concreteType": "PageInfo",
+          "name": "pageInfo",
           "plural": false,
           "selections": [
             {
               "kind": "ScalarField",
               "alias": null,
               "args": null,
-              "name": "id",
+              "name": "endCursor",
               "storageKey": null
             },
             {
-              "kind": "FragmentSpread",
-              "name": "TodoItem_item",
-              "args": null
+              "kind": "ScalarField",
+              "alias": null,
+              "args": null,
+              "name": "hasNextPage",
+              "storageKey": null
             }
           ],
           "storageKey": null
@@ -59,7 +128,7 @@ const fragment /*: ConcreteFragment*/ = {
       "storageKey": null
     }
   ],
-  "type": "TodoConnection"
+  "type": "Query"
 };
 
 module.exports = fragment;
