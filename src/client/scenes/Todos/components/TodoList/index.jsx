@@ -5,9 +5,9 @@ import { createFragmentContainer, graphql } from "react-relay";
 import type { RelayProp } from "react-relay";
 
 import Input from "client/components/Input";
+import type { TodoList_list } from "./__generated__/TodoList_list.graphql";
 import TodoItem from "../TodoItem";
 import ToggleAll from "../ToggleAll";
-import type { TodoItem_item } from "../TodoItem/__generated__/TodoItem_item.graphql";
 import createTodo from "./mutations/createTodo";
 
 const Section = styled.section`
@@ -38,7 +38,7 @@ const Ul = styled.ul`
 
 type Props = {|
   user: string,
-  todos: TodoItem_item[],
+  list: TodoList_list,
   relay: RelayProp,
   // TODO compute all checked
 |};
@@ -73,7 +73,11 @@ class TodoList extends React.PureComponent<Props, State> {
 
   render() {
     const { value } = this.state;
-    const { todos } = this.props;
+    const { list } = this.props;
+
+    if (!list.edges) {
+      return null;
+    }
 
     return (
       <Section>
@@ -86,7 +90,7 @@ class TodoList extends React.PureComponent<Props, State> {
           />
           <Main>
             <ToggleAll checked={false} onChange={this.handleToggleAll} />
-            <Ul>{todos.map(item => <TodoItem key={item.id} item={item} />)}</Ul>
+            <Ul>{list.edges.map(item => <TodoItem key={item.id} item={item} />)}</Ul>
           </Main>
         </header>
       </Section>

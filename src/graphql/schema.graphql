@@ -9,9 +9,11 @@ interface Node {
 type PageInfo {
   hasNextPage: Boolean!
   hasPreviousPage: Boolean!
-  startCursor: String
-  endCursor: String
 }
+
+# Relay Input Object Mutations Specification - @mutation
+# https://facebook.github.io/relay/graphql/mutations.htm
+# - clientMutationId is client's way of mapping responses to requests
 
 type Todo {
   id: ID!
@@ -29,11 +31,11 @@ type TodoConnection {
 # @connections
 type TodoEdge {
   cursor: String!
-  node: Todo
+  node: Todo!
 }
 
 type Query {
-  todos(author: String!): TodoConnection # @connections
+  todos(first: Int, after: String, author: String!): TodoConnection # @connections
   node(id: ID!): Node # @objects
 }
 
@@ -41,22 +43,29 @@ input CreateTodoInput {
   author: String!
   text: String!
   complete: Boolean!
+  clientMutationId: String! # @mutation
 }
 
 input UpdateTodoInput {
+  id: String!
   text: String!
   complete: Boolean!
+  clientMutationId: String! # @mutation
+}
+
+input DeleteTodoInput {
+  id: String!
+  clientMutationId: String! # @mutation
 }
 
 type TodoPayload {
   todo: Todo
-  # Relay Input Object Mutations Specification
-  # https://facebook.github.io/relay/graphql/mutations.htm
-  clientMutationId: String!
+  clientMutationId: String! # @mutation
 }
 
 type Mutation {
+  # All mutations take only 1 arg of type Object - @mutation
   createTodo(input: CreateTodoInput): TodoPayload
-  updateTodo(id: ID!, input: UpdateTodoInput): TodoPayload
-  deleteTodo(id: ID!, author: String!): Todo
+  updateTodo(input: UpdateTodoInput): TodoPayload
+  deleteTodo(input: DeleteTodoInput): TodoPayload
 }

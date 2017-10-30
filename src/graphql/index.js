@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 const fs = require("fs");
 const path = require("path");
 const express = require("express");
@@ -11,47 +12,72 @@ const schemaString = String(fs.readFileSync(path.join(__dirname, "schema.graphql
 const schema = buildSchema(schemaString);
 
 // If it had any complex fields, we'd put them on this object.
-const newTodo = (id, { author, text, complete }) => ({
+const newTodo = (id, position, { author, text, complete }) => ({
   id,
   author,
   text,
   complete,
+  __position: position,
 });
 
 // Maps username to content
+let position = 0;
 const fakeDatabase = {};
 
 const root = {
-  todos({ author }) {
-    return Object.keys(fakeDatabase)
-      .map(id => fakeDatabase[id])
-      .filter(todo => todo.author === author);
+  todos({ /* first, after, */ author }) {
+    const edges = Object.keys(fakeDatabase)
+      .map(id => ({
+        node: fakeDatabase[id],
+        cursor: id,
+      }))
+      .filter(edge => edge.node.author === author)
+      .sort((a, b) => (a.__position > b.__position ? 1 : -1));
+    // TODO pagination
+
+    return {
+      edges,
+      pageInfo: {
+        hasNextPage: false,
+        hasPreviousPage: false,
+      },
+    };
   },
   createTodo({ input }) {
     // Create a random id for the "database".
     const id = crypto.randomBytes(10).toString("hex");
 
-    const msg = newTodo(id, input);
-    fakeDatabase[id] = msg;
-    return msg;
+    const todo = newTodo(id, position, input);
+    fakeDatabase[id] = todo;
+    position += 1;
+    return {
+      todo,
+      clientMutationId: input.clientMutationId,
+    };
   },
-  updateTodo({ id, input }) {
-    if (!fakeDatabase[id] || !fakeDatabase[id].author !== input.author) {
-      throw new Error(`No message exists with id ${id}`);
+  updateTodo({ input }) {
+    if (!fakeDatabase[input.id]) {
+      throw new Error(`No message exists with id ${input.id}`);
     }
 
-    const msg = newTodo(id, input);
-    fakeDatabase[id] = msg;
-    return msg;
+    const todo = newTodo(input.id, input);
+    fakeDatabase[input.id] = todo;
+    return {
+      todo,
+      clientMutationId: input.clientMutationId,
+    };
   },
-  deleteTodo({ id, author }) {
-    if (!fakeDatabase[id] || !fakeDatabase[id].author !== author) {
-      throw new Error(`No message exists with id ${id}`);
+  deleteTodo({ input }) {
+    if (!fakeDatabase[input.id]) {
+      throw new Error(`No message exists with id ${input.id}`);
     }
 
-    const msg = fakeDatabase[id];
-    delete fakeDatabase[id];
-    return msg;
+    const todo = fakeDatabase[input.id];
+    delete fakeDatabase[input.id];
+    return {
+      todo,
+      clientMutationId: input.clientMutationId,
+    };
   },
 };
 

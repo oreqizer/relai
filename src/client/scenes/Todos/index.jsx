@@ -30,8 +30,7 @@ const Todos = (props: Props) => (
         }
 
         if (res.props) {
-          console.log(res.props);
-          return <TodoList todos={res.props.todos} user={props.user} />;
+          return <TodoList list={res.props.todos} user={props.user} />;
         }
 
         return null;
