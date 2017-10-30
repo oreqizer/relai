@@ -90,7 +90,7 @@ class TodoList extends React.PureComponent<Props, State> {
           />
           <Main>
             <ToggleAll checked={false} onChange={this.handleToggleAll} />
-            <Ul>{list.edges.map(edge => <TodoItem key={edge.node.id} item={edge.node} />)}</Ul>
+            <Ul>{list.edges.map(({ node }) => <TodoItem key={node.id} item={node} />)}</Ul>
           </Main>
         </header>
       </Section>
@@ -104,6 +104,7 @@ export default createFragmentContainer(
     fragment TodoList_list on TodoConnection {
       edges {
         node {
+          id
           ...TodoItem_item
         }
       }

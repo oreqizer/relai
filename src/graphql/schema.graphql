@@ -24,7 +24,7 @@ type Todo {
 
 # @connections
 type TodoConnection {
-  edges: [TodoEdge]
+  edges: [TodoEdge!]
   pageInfo: PageInfo!
 }
 

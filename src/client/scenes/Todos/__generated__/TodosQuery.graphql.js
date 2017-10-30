@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 3200e3333076833f0a5d0e5d76e34976
+ * @relayHash 4217b5f252d897da607bcd6e692b6e23
  */
 
 /* eslint-disable */
@@ -27,8 +27,8 @@ query TodosQuery(
 fragment TodoList_list on TodoConnection {
   edges {
     node {
-      ...TodoItem_item
       id
+      ...TodoItem_item
     }
   }
 }
@@ -166,7 +166,7 @@ const batch /*: ConcreteBatch*/ = {
       }
     ]
   },
-  "text": "query TodosQuery(\n  $user: String!\n) {\n  todos(author: $user) {\n    ...TodoList_list\n  }\n}\n\nfragment TodoList_list on TodoConnection {\n  edges {\n    node {\n      ...TodoItem_item\n      id\n    }\n  }\n}\n\nfragment TodoItem_item on Todo {\n  id\n  text\n  complete\n}\n"
+  "text": "query TodosQuery(\n  $user: String!\n) {\n  todos(author: $user) {\n    ...TodoList_list\n  }\n}\n\nfragment TodoList_list on TodoConnection {\n  edges {\n    node {\n      id\n      ...TodoItem_item\n    }\n  }\n}\n\nfragment TodoItem_item on Todo {\n  id\n  text\n  complete\n}\n"
 };
 
 module.exports = batch;

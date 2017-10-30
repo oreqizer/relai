@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 5be6690d65878d11fd402415f42a5e85
+ * @relayHash e15b7c6c23876a9c89c262234f4117e5
  */
 
 /* eslint-disable */
@@ -21,6 +21,9 @@ export type createTodoMutationResponse = {|
   +createTodo: ?{|
     +todo: ?{|
       +id: string;
+      +author: string;
+      +text: string;
+      +complete: boolean;
     |};
     +clientMutationId: string;
   |};
@@ -35,6 +38,9 @@ mutation createTodoMutation(
   createTodo(input: $input) {
     todo {
       id
+      author
+      text
+      complete
     }
     clientMutationId
   }
@@ -83,6 +89,27 @@ const batch /*: ConcreteBatch*/ = {
                 "alias": null,
                 "args": null,
                 "name": "id",
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "author",
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "text",
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "complete",
                 "storageKey": null
               }
             ],
@@ -147,6 +174,27 @@ const batch /*: ConcreteBatch*/ = {
                 "args": null,
                 "name": "id",
                 "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "author",
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "text",
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "complete",
+                "storageKey": null
               }
             ],
             "storageKey": null
@@ -163,7 +211,7 @@ const batch /*: ConcreteBatch*/ = {
       }
     ]
   },
-  "text": "mutation createTodoMutation(\n  $input: CreateTodoInput!\n) {\n  createTodo(input: $input) {\n    todo {\n      id\n    }\n    clientMutationId\n  }\n}\n"
+  "text": "mutation createTodoMutation(\n  $input: CreateTodoInput!\n) {\n  createTodo(input: $input) {\n    todo {\n      id\n      author\n      text\n      complete\n    }\n    clientMutationId\n  }\n}\n"
 };
 
 module.exports = batch;

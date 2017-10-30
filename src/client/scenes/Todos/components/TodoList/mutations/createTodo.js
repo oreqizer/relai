@@ -8,6 +8,9 @@ const mutation = graphql`
     createTodo(input: $input) {
       todo {
         id
+        author
+        text
+        complete
       }
       clientMutationId
     }
@@ -15,18 +18,43 @@ const mutation = graphql`
 `;
 
 function createTodo(environment: Environment, author: string, text: string) {
+  const mutationId = v4();
   const variables = {
     input: {
       author,
       text,
       complete: false,
-      clientMutationId: v4(),
+      clientMutationId: mutationId,
     },
   };
 
   commitMutation(environment, {
     mutation,
     variables,
+    optimisticResponse: {
+      createTodo: {
+        todo: {
+          id: mutationId,
+          author,
+          text,
+          complete: false,
+        },
+        clientMutationId: mutationId,
+      },
+    },
+    configs: [
+      {
+        type: "RANGE_ADD",
+        parentID: "todos",
+        connectionInfo: [
+          {
+            key: "TodoList_list",
+            rangeBehavior: "append",
+          },
+        ],
+        edgeName: "todo",
+      },
+    ],
     onCompleted: console.log,
     onError: console.error,
   });

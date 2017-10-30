@@ -9,8 +9,10 @@
 /*::
 import type {ConcreteFragment} from 'relay-runtime';
 export type TodoList_list = {|
-  +edges: ?$ReadOnlyArray<?{|
-    +node: {| |};
+  +edges: ?$ReadOnlyArray<{|
+    +node: {|
+      +id: string;
+    |};
   |}>;
 |};
 */
@@ -38,6 +40,13 @@ const fragment /*: ConcreteFragment*/ = {
           "name": "node",
           "plural": false,
           "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "args": null,
+              "name": "id",
+              "storageKey": null
+            },
             {
               "kind": "FragmentSpread",
               "name": "TodoItem_item",
