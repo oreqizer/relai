@@ -4,7 +4,7 @@
   "description": "GraphQL and Relay playground.",
   "main": "dist/server/index.js",
   "scripts": {
-    "start": "npm run clean && npm run build:server && run-p run run:dev",
+    "start": "npm run clean && npm run build:server && run-p run run:dev run:graphql",
     "run": "NODE_ENV=production node dist/server",
     "run:dev": "webpack-dev-server --config etc/webpack.dev.js --inline --hot",
     "run:graphql": "node ./src/graphql",
