@@ -11,8 +11,30 @@ const relay = require("graphql-relay");
 const db = require("./database");
 
 /**
- * See 'schema.graphqls' for shorthand notation
+ * See 'schema.graphql' for shorthand notation
  */
+
+// Weird shit :(
+// https://github.com/graphql/graphql-relay-js/blob/master/src/__tests__/starWarsSchema.js
+let todoType = null;
+let userType = null;
+
+/**
+ * We get the node interface and field from the relay library.
+ *
+ * The first method is the way we resolve an ID to its object. The second is the
+ * way we resolve an object that implements node to its type.
+ */
+const { nodeInterface, nodeField } = relay.nodeDefinitions(globalId => {
+  const { type, id } = relay.fromGlobalId(globalId);
+  if (type === "User") {
+    return db.getUser(id);
+  }
+  if (type === "Todo") {
+    return db.getTodo(id);
+  }
+  return null;
+}, obj => (obj.todos ? userType : todoType));
 
 /**
  * We define our basic todo type.
@@ -24,18 +46,18 @@ const db = require("./database");
  *     complete: Boolean!
  *   }
  */
-const todoType = new GraphQLObjectType({
+todoType = new GraphQLObjectType({
   name: "Todo",
   description: "A todo item.",
-  // interfaces: [nodeInterface], TODO how the fuck??
+  interfaces: [nodeInterface], // can be () => [nodeInterface]
   fields: () => ({
     id: relay.globalIdField(),
     text: {
-      type: GraphQLNonNull(GraphQLString),
+      type: new GraphQLNonNull(GraphQLString),
       description: "The text of the todo.",
     },
     complete: {
-      type: GraphQLNonNull(GraphQLBoolean),
+      type: new GraphQLNonNull(GraphQLBoolean),
     },
   }),
 });
@@ -70,14 +92,14 @@ const { connectionType: todoConnection, edgeType: todoEdge } = relay.connectionD
  *     todos: TodoConnection
  *   }
  */
-const userType = new GraphQLObjectType({
+userType = new GraphQLObjectType({
   name: "User",
   description: "A user.",
-  // interfaces: [nodeInterface], TODO how the fuck??
+  interfaces: [nodeInterface], // can be () => [nodeInterface]
   fields: () => ({
     id: relay.globalIdField(),
     name: {
-      type: GraphQLNonNull(GraphQLString),
+      type: new GraphQLNonNull(GraphQLString),
       description: "The name of the user.",
     },
     todos: {
@@ -88,22 +110,6 @@ const userType = new GraphQLObjectType({
     },
   }),
 });
-
-/**
- * We get the node interface and field from the relay library.
- *
- * The first method is the way we resolve an ID to its object. The second is the
- * way we resolve an object that implements node to its type.
- */
-const { /* nodeInterface, */ nodeField } = relay.nodeDefinitions(globalId => {
-  const { type, id } = relay.fromGlobalId(globalId);
-  if (type === "User") {
-    return db.getUser(id);
-  }
-  if (type === "Todo") {
-    return db.getTodo(id);
-  }
-}, obj => (obj.todos ? userType : todoType));
 
 /**
  * This is the type that will be the root of our query, and the
@@ -120,13 +126,26 @@ const queryType = new GraphQLObjectType({
   fields: () => ({
     user: {
       type: userType,
-      resolve: user => db.getUserByName(user.name),
+      args: {
+        name: {
+          type: new GraphQLNonNull(GraphQLString),
+        },
+      },
+      resolve: (_, args) => {
+        const maybeUser = db.getUserByName(args.name);
+        if (maybeUser) {
+          return maybeUser;
+        }
+
+        const user = db.createUser(args.name);
+        return user;
+      },
     },
     node: nodeField,
   }),
 });
 
-// TODO comment
+// TODO comment like from 'https://github.com/graphql/graphql-relay-js/blob/master/src/__tests__/starWarsSchema.js'
 const createTodoMutation = relay.mutationWithClientMutationId({
   name: "CreateTodo",
   inputFields: {
@@ -157,15 +176,21 @@ const createTodoMutation = relay.mutationWithClientMutationId({
   },
 });
 
-// TODO comment
+// TODO comment like from 'https://github.com/graphql/graphql-relay-js/blob/master/src/__tests__/starWarsSchema.js'
 const updateTodoMutation = relay.mutationWithClientMutationId({
   name: "UpdateTodo",
   inputFields: {
     userId: {
       type: new GraphQLNonNull(GraphQLID),
     },
-    todo: {
-      type: todoType,
+    id: {
+      type: new GraphQLNonNull(GraphQLID),
+    },
+    text: {
+      type: new GraphQLNonNull(GraphQLString),
+    },
+    complete: {
+      type: new GraphQLNonNull(GraphQLBoolean),
     },
   },
   outputFields: {
@@ -188,7 +213,7 @@ const updateTodoMutation = relay.mutationWithClientMutationId({
   },
 });
 
-// TODO comment
+// TODO comment like from 'https://github.com/graphql/graphql-relay-js/blob/master/src/__tests__/starWarsSchema.js'
 const deleteTodoMutation = relay.mutationWithClientMutationId({
   name: "DeleteTodo",
   inputFields: {
@@ -196,7 +221,7 @@ const deleteTodoMutation = relay.mutationWithClientMutationId({
       type: new GraphQLNonNull(GraphQLID),
     },
     todoId: {
-      type: new GraphQLNonNull(GraphQLString),
+      type: new GraphQLNonNull(GraphQLID),
     },
   },
   outputFields: {

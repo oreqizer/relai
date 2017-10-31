@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 77c329dd75f5a1f893799f0e7910bf54
+ * @relayHash 3db966adbbd34a35a2b30a4e64cc9156
  */
 
 /* eslint-disable */
@@ -15,7 +15,7 @@ export type updateTodoMutationVariables = {|
     id: string;
     text: string;
     complete: boolean;
-    clientMutationId: string;
+    clientMutationId?: ?string;
   };
 |};
 export type updateTodoMutationResponse = {|
@@ -28,7 +28,7 @@ export type updateTodoMutationResponse = {|
         +complete: boolean;
       |};
     |};
-    +clientMutationId: string;
+    +clientMutationId: ?string;
   |};
 |};
 */
@@ -74,10 +74,10 @@ const batch /*: ConcreteBatch*/ = {
             "kind": "Variable",
             "name": "input",
             "variableName": "input",
-            "type": "UpdateTodoInput"
+            "type": "UpdateTodoInput!"
           }
         ],
-        "concreteType": "TodoPayload",
+        "concreteType": "UpdateTodoPayload",
         "name": "updateTodo",
         "plural": false,
         "selections": [
@@ -169,10 +169,10 @@ const batch /*: ConcreteBatch*/ = {
             "kind": "Variable",
             "name": "input",
             "variableName": "input",
-            "type": "UpdateTodoInput"
+            "type": "UpdateTodoInput!"
           }
         ],
-        "concreteType": "TodoPayload",
+        "concreteType": "UpdateTodoPayload",
         "name": "updateTodo",
         "plural": false,
         "selections": [

@@ -15,8 +15,7 @@ const Lookups = {
 const newUser = ({ id, name }) => ({
   id,
   name,
-  todos: {},
-  todosOrder: [],
+  todos: [],
 });
 
 const newTodo = ({ id, text }) => ({
@@ -60,9 +59,9 @@ function createTodo(userId, text) {
   const id = v4();
   const todo = newTodo({ id, text });
 
+  console.log(DB, userId);
   DB.todos[id] = todo;
-  DB.users[userId].todos[id] = todo;
-  DB.users[userId].todosOrder.push(id);
+  DB.users[userId].todos.push(id);
   return todo;
 }
 
@@ -78,8 +77,7 @@ function deleteTodo(userId, id) {
   checkTodoOwner(userId, id);
 
   delete DB.todos[id];
-  delete DB.users[userId].todos[id];
-  DB.users[userId].todosOrder = DB.users[userId].todosOrder.filter(oid => oid !== id);
+  DB.users[userId].todos = DB.users[userId].todos.filter(oid => oid !== id);
   return id;
 }
 

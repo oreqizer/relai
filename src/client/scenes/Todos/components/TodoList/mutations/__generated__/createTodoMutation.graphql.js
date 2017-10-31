@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 7a9b848133571f2f5709d16e47ee1e8c
+ * @relayHash bb9689763ed4e7c7cf3ef8e344613427
  */
 
 /* eslint-disable */
@@ -13,8 +13,7 @@ export type createTodoMutationVariables = {|
   input: {
     userId: string;
     text: string;
-    complete: boolean;
-    clientMutationId: string;
+    clientMutationId?: ?string;
   };
 |};
 export type createTodoMutationResponse = {|
@@ -27,7 +26,7 @@ export type createTodoMutationResponse = {|
         +complete: boolean;
       |};
     |};
-    +clientMutationId: string;
+    +clientMutationId: ?string;
   |};
 |};
 */
@@ -73,10 +72,10 @@ const batch /*: ConcreteBatch*/ = {
             "kind": "Variable",
             "name": "input",
             "variableName": "input",
-            "type": "CreateTodoInput"
+            "type": "CreateTodoInput!"
           }
         ],
-        "concreteType": "TodoPayload",
+        "concreteType": "CreateTodoPayload",
         "name": "createTodo",
         "plural": false,
         "selections": [
@@ -168,10 +167,10 @@ const batch /*: ConcreteBatch*/ = {
             "kind": "Variable",
             "name": "input",
             "variableName": "input",
-            "type": "CreateTodoInput"
+            "type": "CreateTodoInput!"
           }
         ],
-        "concreteType": "TodoPayload",
+        "concreteType": "CreateTodoPayload",
         "name": "createTodo",
         "plural": false,
         "selections": [

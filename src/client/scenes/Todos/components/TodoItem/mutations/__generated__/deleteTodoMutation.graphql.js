@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 17622ac6618f6df555d38f6f72400469
+ * @relayHash 080340339c791dde301be608665304ed
  */
 
 /* eslint-disable */
@@ -12,14 +12,14 @@ import type {ConcreteBatch} from 'relay-runtime';
 export type deleteTodoMutationVariables = {|
   input: {
     userId: string;
-    id: string;
-    clientMutationId: string;
+    todoId: string;
+    clientMutationId?: ?string;
   };
 |};
 export type deleteTodoMutationResponse = {|
   +deleteTodo: ?{|
     +deletedId: string;
-    +clientMutationId: string;
+    +clientMutationId: ?string;
   |};
 |};
 */
@@ -58,7 +58,7 @@ const batch /*: ConcreteBatch*/ = {
             "kind": "Variable",
             "name": "input",
             "variableName": "input",
-            "type": "DeleteTodoInput"
+            "type": "DeleteTodoInput!"
           }
         ],
         "concreteType": "DeleteTodoPayload",
@@ -110,7 +110,7 @@ const batch /*: ConcreteBatch*/ = {
             "kind": "Variable",
             "name": "input",
             "variableName": "input",
-            "type": "DeleteTodoInput"
+            "type": "DeleteTodoInput!"
           }
         ],
         "concreteType": "DeleteTodoPayload",
