@@ -8,6 +8,7 @@ import Input from "client/components/Input";
 import type { TodoItem_item } from "./__generated__/TodoItem_item.graphql";
 import Toggle from "../Toggle";
 import deleteTodo from "./mutations/deleteTodo";
+import updateTodo from "./mutations/updateTodo";
 
 const Li = styled.li`
   position: relative;
@@ -92,8 +93,13 @@ class TodoItem extends React.PureComponent<Props, State> {
   input: ?HTMLInputElement;
 
   handleToggle = (ev: SyntheticEvent<HTMLInputElement>) => {
+    const { item, userId, relay: { environment } } = this.props;
+
     if (ev.target instanceof HTMLInputElement) {
-      // TODO toggle complete
+      updateTodo(environment, userId, {
+        ...item,
+        complete: ev.target.checked,
+      });
     }
   };
 
@@ -118,8 +124,13 @@ class TodoItem extends React.PureComponent<Props, State> {
   };
 
   handleEdit = (ev: SyntheticEvent<HTMLInputElement>) => {
+    const { item, userId, relay: { environment } } = this.props;
+
     if (ev.target instanceof HTMLInputElement) {
-      // TODO handle edit
+      updateTodo(environment, userId, {
+        ...item,
+        text: ev.target.value,
+      });
       this.setState({ editing: false });
     }
   };
