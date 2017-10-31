@@ -73,7 +73,7 @@ class TodoList extends React.PureComponent<Props, State> {
 
   render() {
     const { value } = this.state;
-    const { list } = this.props;
+    const { list, userId } = this.props;
 
     if (!list.todos || !list.todos.edges) {
       return null;
@@ -90,7 +90,11 @@ class TodoList extends React.PureComponent<Props, State> {
           />
           <Main>
             <ToggleAll checked={false} onChange={this.handleToggleAll} />
-            <Ul>{list.todos.edges.map(({ node }) => <TodoItem key={node.id} item={node} />)}</Ul>
+            <Ul>
+              {list.todos.edges
+                .filter(edge => edge.node !== null)
+                .map(({ node }) => <TodoItem key={node.id} item={node} userId={userId} />)}
+            </Ul>
           </Main>
         </header>
       </Section>

@@ -38,7 +38,7 @@ type TodoConnection {
 # @connections
 type TodoEdge {
   cursor: String!
-  node: Todo!
+  node: Todo
 }
 
 type Query {
@@ -72,9 +72,14 @@ type TodoPayload {
   clientMutationId: String! # @mutation
 }
 
+type DeleteTodoPayload {
+  deletedId: ID!
+  clientMutationId: String! # @mutation
+}
+
 type Mutation {
   # All mutations take only 1 arg of type Object - @mutation
   createTodo(input: CreateTodoInput): TodoPayload
   updateTodo(input: UpdateTodoInput): TodoPayload
-  deleteTodo(input: DeleteTodoInput): TodoPayload
+  deleteTodo(input: DeleteTodoInput): DeleteTodoPayload
 }

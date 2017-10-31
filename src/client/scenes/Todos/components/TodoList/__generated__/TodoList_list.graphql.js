@@ -11,7 +11,7 @@ import type {ConcreteFragment} from 'relay-runtime';
 export type TodoList_list = {|
   +todos: ?{|
     +edges: ?$ReadOnlyArray<{|
-      +node: {|
+      +node: ?{|
         +id: string;
       |};
     |}>;

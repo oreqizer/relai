@@ -119,15 +119,11 @@ const root = {
       throw new Error(`No todo exists with id ${input.id}`);
     }
 
-    const todo = fakeTodoDB[input.userId][input.id];
     delete fakeTodoDB[input.userId][input.id];
     return new Promise(resolve => {
       setTimeout(() => {
         resolve({
-          todoEdge: {
-            cursor: todo.id,
-            node: todo,
-          },
+          deletedId: input.id,
           clientMutationId: input.clientMutationId,
         });
       }, 1000);

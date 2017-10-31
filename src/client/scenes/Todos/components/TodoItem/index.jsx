@@ -2,10 +2,12 @@
 import * as React from "react";
 import { createFragmentContainer, graphql } from "react-relay";
 import styled, { css } from "styled-components";
+import type { RelayProp } from "react-relay";
 
 import Input from "client/components/Input";
 import type { TodoItem_item } from "./__generated__/TodoItem_item.graphql";
 import Toggle from "../Toggle";
+import deleteTodo from "./mutations/deleteTodo";
 
 const Li = styled.li`
   position: relative;
@@ -72,6 +74,8 @@ const Destroy = styled.button`
 
 type Props = {|
   item: TodoItem_item,
+  userId: string,
+  relay: RelayProp,
 |};
 
 type State = {|
@@ -121,7 +125,9 @@ class TodoItem extends React.PureComponent<Props, State> {
   };
 
   handleDestroy = () => {
-    // TODO handle destroy
+    const { item, userId, relay: { environment } } = this.props;
+
+    deleteTodo(environment, userId, item.id);
   };
 
   render() {
@@ -147,7 +153,7 @@ class TodoItem extends React.PureComponent<Props, State> {
             <Label htmlFor={item.id} complete={item.complete} onClick={this.handleInitEdit}>
               {item.text}
             </Label>
-            <Destroy onChange={this.handleToggle} />
+            <Destroy onClick={this.handleDestroy} />
           </div>
         )}
       </Li>

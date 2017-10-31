@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash d9a0b5d2e25a131a209b3df266d3b726
+ * @relayHash 7a9b848133571f2f5709d16e47ee1e8c
  */
 
 /* eslint-disable */
@@ -21,7 +21,7 @@ export type createTodoMutationResponse = {|
   +createTodo: ?{|
     +todoEdge: ?{|
       +cursor: string;
-      +node: {|
+      +node: ?{|
         +id: string;
         +text: string;
         +complete: boolean;
