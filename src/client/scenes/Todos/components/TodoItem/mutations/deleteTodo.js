@@ -12,12 +12,12 @@ const mutation = graphql`
   }
 `;
 
-function deleteTodo(environment: Environment, userId: string, id: string) {
+function deleteTodo(environment: Environment, userId: string, todoId: string) {
   const mutationId = v4();
   const variables = {
     input: {
       userId,
-      id,
+      todoId,
       clientMutationId: mutationId,
     },
   };
@@ -27,7 +27,7 @@ function deleteTodo(environment: Environment, userId: string, id: string) {
     variables,
     optimisticResponse: {
       deleteTodo: {
-        deletedId: id,
+        deletedId: todoId,
         clientMutationId: mutationId,
       },
     },

@@ -169,7 +169,8 @@ const createTodoMutation = relay.mutationWithClientMutationId({
     },
   },
   mutateAndGetPayload: ({ userId, text }) => {
-    const todo = db.createTodo(userId, text);
+    const localUserId = relay.fromGlobalId(userId).id;
+    const todo = db.createTodo(localUserId, text);
     return {
       todoId: todo.id,
     };
@@ -205,8 +206,10 @@ const updateTodoMutation = relay.mutationWithClientMutationId({
       },
     },
   },
-  mutateAndGetPayload: ({ userId, todo }) => {
-    const updatedTodo = db.updateTodo(userId, todo);
+  mutateAndGetPayload: ({ userId, id, text, complete }) => {
+    const localTodoId = relay.fromGlobalId(id).id;
+    const localUserId = relay.fromGlobalId(userId).id;
+    const updatedTodo = db.updateTodo(localUserId, { id: localTodoId, text, complete });
     return {
       todoId: updatedTodo.id,
     };
@@ -227,11 +230,13 @@ const deleteTodoMutation = relay.mutationWithClientMutationId({
   outputFields: {
     deletedId: {
       type: new GraphQLNonNull(GraphQLID),
-      resolve: payload => payload.deletedId,
+      resolve: payload => relay.toGlobalId(payload.deletedId), // TODO doesn't work :(
     },
   },
   mutateAndGetPayload: ({ userId, todoId }) => {
-    const deletedId = db.deleteTodo(userId, todoId);
+    const localTodoId = relay.fromGlobalId(todoId).id;
+    const localUserId = relay.fromGlobalId(userId).id;
+    const deletedId = db.deleteTodo(localUserId, localTodoId);
     return { deletedId };
   },
 });

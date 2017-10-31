@@ -46,7 +46,7 @@ function createUser(name) {
 // Todos
 // -----
 function checkTodoOwner(userId, id) {
-  if (!DB.users[userId].todos[id]) {
+  if (!DB.users[userId].todos.includes(id)) {
     throw new Error(`Todo with ID '${id}' does not belong to user with ID '${userId}'`);
   }
 }
@@ -59,7 +59,6 @@ function createTodo(userId, text) {
   const id = v4();
   const todo = newTodo({ id, text });
 
-  console.log(DB, userId);
   DB.todos[id] = todo;
   DB.users[userId].todos.push(id);
   return todo;

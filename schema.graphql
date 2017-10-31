@@ -1,5 +1,5 @@
 # source: http://localhost:8081/graphql
-# timestamp: Tue Oct 31 2017 17:31:30 GMT+0100 (CET)
+# timestamp: Tue Oct 31 2017 17:42:30 GMT+0100 (CET)
 
 input CreateTodoInput {
   userId: ID!
@@ -14,7 +14,7 @@ type CreateTodoPayload {
 
 input DeleteTodoInput {
   userId: ID!
-  todoId: String!
+  todoId: ID!
   clientMutationId: String
 }
 

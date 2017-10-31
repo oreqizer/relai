@@ -8,7 +8,7 @@
     "run": "NODE_ENV=production node dist/server",
     "run:dev": "webpack-dev-server --config etc/webpack.dev.js --inline --hot",
     "graphql": "node ./src/graphql",
-    "graphql:dev": "nodemon ./src/graphql",
+    "graphql:dev": "nodemon ./src/graphql --watch ./src/graphql",
     "graphql:schema": "graphql get-schema",
     "relay": "relay-compiler --src ./src --schema ./schema.graphql --extensions jsx --extensions js",
     "relay:dev": "relay-compiler --src ./src --schema ./schema.graphql --extensions jsx --extensions js --watch",

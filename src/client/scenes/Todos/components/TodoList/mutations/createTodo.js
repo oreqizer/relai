@@ -25,7 +25,6 @@ function createTodo(environment: Environment, userId: string, text: string) {
     input: {
       userId,
       text,
-      complete: false,
       clientMutationId: mutationId,
     },
   };
