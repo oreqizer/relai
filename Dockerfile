@@ -1,4 +1,4 @@
-FROM node:7.7-slim
+FROM node:8.7-slim
 
 # yarn things
 RUN apt-get update && \
