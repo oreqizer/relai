@@ -38,7 +38,7 @@ const newUser = (id, { name }) => ({
   },
 });
 
-const newTodo = (id, userId, position, { text, complete }) => ({
+const newTodo = (id, position, { text, complete }) => ({
   id,
   text,
   complete,
@@ -71,7 +71,7 @@ const root = {
     // Create a random id for the "database".
     const id = crypto.randomBytes(10).toString("hex");
 
-    const todo = newTodo(id, input.userId, globalPosition, input);
+    const todo = newTodo(id, globalPosition, input);
     fakeTodoDB[input.userId][id] = todo;
     globalPosition += 1;
     return new Promise(resolve => {
@@ -96,7 +96,7 @@ const root = {
     }
 
     const position = fakeTodoDB[input.userId][input.id].__position;
-    const todo = newTodo(input.id, input.userId, position, input);
+    const todo = newTodo(input.id, position, input);
     fakeTodoDB[input.userId][input.id] = todo;
     return new Promise(resolve => {
       setTimeout(() => {
