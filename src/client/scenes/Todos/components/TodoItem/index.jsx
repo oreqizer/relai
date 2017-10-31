@@ -127,10 +127,14 @@ class TodoItem extends React.PureComponent<Props, State> {
     const { item, userId, relay: { environment } } = this.props;
 
     if (ev.target instanceof HTMLInputElement) {
-      updateTodo(environment, userId, {
-        ...item,
-        text: ev.target.value,
-      });
+      const { value } = ev.target;
+      if (value !== item.text) {
+        updateTodo(environment, userId, {
+          ...item,
+          text: value,
+        });
+      }
+
       this.setState({ editing: false });
     }
   };
