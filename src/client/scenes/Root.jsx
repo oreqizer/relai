@@ -23,7 +23,7 @@ export default class Root extends React.Component<{}, State> {
     viewTodos: false,
   };
 
-  handleChange = user => {
+  handleChange = (user: string) => {
     this.setState({ user });
   };
 
@@ -37,7 +37,7 @@ export default class Root extends React.Component<{}, State> {
     return (
       <Container>
         {viewTodos ? (
-          <Todos user={user} onSwitchView={this.handleSwitchView} />
+          <Todos user={user} />
         ) : (
           <UserInput
             value={user}

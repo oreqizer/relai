@@ -40,7 +40,6 @@ type Props = {|
   userId: string,
   list: TodoList_list,
   relay: RelayProp,
-  // TODO compute all checked
 |};
 
 type State = {|
