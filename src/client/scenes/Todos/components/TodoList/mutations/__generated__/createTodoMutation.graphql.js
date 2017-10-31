@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash e696a9ca93a2359db6b35d9b6cf2fb36
+ * @relayHash d9a0b5d2e25a131a209b3df266d3b726
  */
 
 /* eslint-disable */
@@ -11,7 +11,7 @@
 import type {ConcreteBatch} from 'relay-runtime';
 export type createTodoMutationVariables = {|
   input: {
-    author: string;
+    userId: string;
     text: string;
     complete: boolean;
     clientMutationId: string;

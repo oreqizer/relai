@@ -37,7 +37,7 @@ const Ul = styled.ul`
 `;
 
 type Props = {|
-  user: string,
+  userId: string,
   list: TodoList_list,
   relay: RelayProp,
   // TODO compute all checked
@@ -57,10 +57,10 @@ class TodoList extends React.PureComponent<Props, State> {
   };
 
   handleKeyPress = (ev: SyntheticEvent<HTMLInputElement>) => {
-    const { user, relay: { environment } } = this.props;
+    const { userId, relay: { environment } } = this.props;
 
     if (ev.key === "Enter" && ev.target instanceof HTMLInputElement) {
-      createTodo(environment, user, ev.target.value);
+      createTodo(environment, userId, ev.target.value);
       this.setState({ value: "" });
     }
   };
@@ -75,7 +75,7 @@ class TodoList extends React.PureComponent<Props, State> {
     const { value } = this.state;
     const { list } = this.props;
 
-    if (!list.todos.edges) {
+    if (!list.todos || !list.todos.edges) {
       return null;
     }
 
@@ -101,8 +101,10 @@ class TodoList extends React.PureComponent<Props, State> {
 export default createFragmentContainer(
   TodoList,
   graphql`
-    fragment TodoList_list on Query {
-      todos(author: $user, first: 100000) @connection(key: "TodoList_todos", filters: []) {
+    fragment TodoList_list on User {
+      todos(
+        first: 10000000 # A random big number
+      ) @connection(key: "TodoList_todos", filters: []) {
         edges {
           node {
             id

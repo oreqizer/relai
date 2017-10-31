@@ -12,7 +12,7 @@
     "bundle:min": "npm run clean && npm run build:server && cross-env NODE_ENV=production npm run build:client",
     "build:server": "webpack --config etc/webpack.server.js && npm run clean:server",
     "build:client": "webpack --config etc/webpack.build.js",
-    "relay": "relay-compiler --src ./src --schema src/graphql/schema.graphql --extensions jsx --extensions js",
+    "relay": "relay-compiler --src ./src --schema ./schema.graphqls --extensions jsx --extensions js",
     "test": "echo 'TODO: add Jest + enzyme'",
     "lint": "eslint '**/*.{js,jsx}'",
     "flow": "flow",

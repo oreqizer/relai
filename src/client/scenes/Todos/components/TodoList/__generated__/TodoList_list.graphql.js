@@ -21,13 +21,7 @@ export type TodoList_list = {|
 
 
 const fragment /*: ConcreteFragment*/ = {
-  "argumentDefinitions": [
-    {
-      "kind": "RootArgument",
-      "name": "user",
-      "type": "String!"
-    }
-  ],
+  "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": {
     "connection": [
@@ -128,7 +122,7 @@ const fragment /*: ConcreteFragment*/ = {
       "storageKey": null
     }
   ],
-  "type": "Query"
+  "type": "User"
 };
 
 module.exports = fragment;

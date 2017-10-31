@@ -8,30 +8,23 @@ const graphqlHTTP = require("express-graphql");
 const { buildSchema } = require("graphql");
 const crypto = require("crypto");
 
-const schemaString = String(fs.readFileSync(path.join(__dirname, "schema.graphql")));
+const schemaString = String(fs.readFileSync(path.join(__dirname, "../../schema.graphqls")));
 const schema = buildSchema(schemaString);
 
-// If it had any complex fields, we'd put them on this object.
-const newTodo = (id, position, { author, text, complete }) => ({
-  id,
-  author,
-  text,
-  complete,
-  __position: position,
-});
-
 // Maps username to content
-let position = 0;
-const fakeDatabase = {};
+let globalPosition = 0;
+const fakeUserDB = {};
+const fakeTodoDB = {};
 
-const root = {
-  todos({ /* first, after, */ author }) {
-    const edges = Object.keys(fakeDatabase)
-      .map(id => ({
-        node: fakeDatabase[id],
-        cursor: id,
+const newUser = (id, { name }) => ({
+  id,
+  name,
+  todos(/* { first, after } */) {
+    const edges = Object.keys(fakeTodoDB[id] || {})
+      .map(tid => ({
+        node: fakeTodoDB[id][tid],
+        cursor: tid,
       }))
-      .filter(edge => edge.node.author === author)
       .sort((a, b) => (a.__position > b.__position ? 1 : -1));
     // TODO pagination
 
@@ -43,50 +36,102 @@ const root = {
       },
     };
   },
+});
+
+const newTodo = (id, userId, position, { text, complete }) => ({
+  id,
+  text,
+  complete,
+  __position: position,
+});
+
+const root = {
+  // Query
+  // ---
+  user({ name }) {
+    if (fakeUserDB[name]) {
+      return fakeUserDB[name];
+    }
+
+    // Create a random id for the "database".
+    const id = crypto.randomBytes(10).toString("hex");
+    const user = newUser(id, { name });
+    fakeUserDB[name] = user;
+    fakeTodoDB[id] = {};
+    return user;
+  },
+
+  // Mutations
+  // ---
   createTodo({ input }) {
+    if (!fakeTodoDB[input.userId]) {
+      throw new Error(`No user exists with id ${input.userId}`);
+    }
+
     // Create a random id for the "database".
     const id = crypto.randomBytes(10).toString("hex");
 
-    const todo = newTodo(id, position, input);
-    fakeDatabase[id] = todo;
-    position += 1;
-    return {
-      todoEdge: {
-        cursor: todo.id,
-        node: todo,
-      },
-      clientMutationId: input.clientMutationId,
-    };
+    const todo = newTodo(id, input.userId, globalPosition, input);
+    fakeTodoDB[input.userId][id] = todo;
+    globalPosition += 1;
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve({
+          todoEdge: {
+            cursor: todo.id,
+            node: todo,
+          },
+          clientMutationId: input.clientMutationId,
+        });
+      }, 1000);
+    });
   },
   updateTodo({ input }) {
-    if (!fakeDatabase[input.id]) {
-      throw new Error(`No message exists with id ${input.id}`);
+    if (!fakeTodoDB[input.userId]) {
+      throw new Error(`No user exists with id ${input.userId}`);
     }
 
-    const todo = newTodo(input.id, input);
-    fakeDatabase[input.id] = todo;
-    return {
-      todoEdge: {
-        cursor: todo.id,
-        node: todo,
-      },
-      clientMutationId: input.clientMutationId,
-    };
+    if (!fakeTodoDB[input.userId][input.id]) {
+      throw new Error(`No todo exists with id ${input.id}`);
+    }
+
+    const position = fakeTodoDB[input.userId][input.id].__position;
+    const todo = newTodo(input.id, input.userId, position, input);
+    fakeTodoDB[input.userId][input.id] = todo;
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve({
+          todoEdge: {
+            cursor: todo.id,
+            node: todo,
+          },
+          clientMutationId: input.clientMutationId,
+        });
+      }, 1000);
+    });
   },
   deleteTodo({ input }) {
-    if (!fakeDatabase[input.id]) {
-      throw new Error(`No message exists with id ${input.id}`);
+    if (!fakeTodoDB[input.userId]) {
+      throw new Error(`No user exists with id ${input.userId}`);
     }
 
-    const todo = fakeDatabase[input.id];
-    delete fakeDatabase[input.id];
-    return {
-      todoEdge: {
-        cursor: todo.id,
-        node: todo,
-      },
-      clientMutationId: input.clientMutationId,
-    };
+    if (!fakeTodoDB[input.userId][input.id]) {
+      throw new Error(`No todo exists with id ${input.id}`);
+    }
+
+    const todo = fakeTodoDB[input.userId][input.id];
+    delete fakeTodoDB[input.userId][input.id];
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve({
+          todoEdge: {
+            cursor: todo.id,
+            node: todo,
+          },
+          clientMutationId: input.clientMutationId,
+        });
+      }, 1000);
+    });
   },
 };
 

@@ -17,9 +17,14 @@ type PageInfo {
 # https://facebook.github.io/relay/graphql/mutations.htm
 # - clientMutationId is client's way of mapping responses to requests
 
+type User {
+  id: ID!
+  name: String!
+  todos(display: String = "all", first: Int, after: String): TodoConnection # @connections
+}
+
 type Todo {
   id: ID!
-  author: String!
   text: String!
   complete: Boolean!
 }
@@ -37,18 +42,19 @@ type TodoEdge {
 }
 
 type Query {
-  todos(first: Int, after: String, author: String!): TodoConnection # @connections
+  user(name: String!): User
   node(id: ID!): Node # @objects
 }
 
 input CreateTodoInput {
-  author: String!
+  userId: ID! # Normally taken from JWTs or something
   text: String!
   complete: Boolean!
   clientMutationId: String! # @mutation
 }
 
 input UpdateTodoInput {
+  userId: ID! # Normally taken from JWTs or something
   id: String!
   text: String!
   complete: Boolean!
@@ -56,6 +62,7 @@ input UpdateTodoInput {
 }
 
 input DeleteTodoInput {
+  userId: ID! # Normally taken from JWTs or something
   id: String!
   clientMutationId: String! # @mutation
 }
