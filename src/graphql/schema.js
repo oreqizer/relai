@@ -230,7 +230,7 @@ const deleteTodoMutation = relay.mutationWithClientMutationId({
   outputFields: {
     deletedId: {
       type: new GraphQLNonNull(GraphQLID),
-      resolve: payload => relay.toGlobalId(payload.deletedId), // TODO doesn't work :(
+      resolve: payload => relay.toGlobalId("Todo", payload.deletedId),
     },
   },
   mutateAndGetPayload: ({ userId, todoId }) => {
