@@ -9,15 +9,11 @@ const {
 const relay = require("graphql-relay");
 
 const db = require("./database");
+const typeStore = require("./typeStore");
 
 /**
  * See 'schema.graphql' for shorthand notation
  */
-
-// Weird shit :(
-// https://github.com/graphql/graphql-relay-js/blob/master/src/__tests__/starWarsSchema.js
-let todoType = null;
-let userType = null;
 
 /**
  * We get the node interface and field from the relay library.
@@ -34,7 +30,7 @@ const { nodeInterface, nodeField } = relay.nodeDefinitions(globalId => {
     return db.getTodo(id);
   }
   return null;
-}, obj => (obj.todos ? userType : todoType));
+}, typeStore.detectType);
 
 /**
  * We define our basic todo type.
@@ -46,7 +42,7 @@ const { nodeInterface, nodeField } = relay.nodeDefinitions(globalId => {
  *     complete: Boolean!
  *   }
  */
-todoType = new GraphQLObjectType({
+const todoType = new GraphQLObjectType({
   name: "Todo",
   description: "A todo item.",
   interfaces: [nodeInterface], // can be () => [nodeInterface]
@@ -61,6 +57,8 @@ todoType = new GraphQLObjectType({
     },
   }),
 });
+
+typeStore.register("Todo", todoType);
 
 /**
  * We define a connection between a user and his todos.
@@ -92,7 +90,7 @@ const { connectionType: todoConnection, edgeType: todoEdge } = relay.connectionD
  *     todos: TodoConnection
  *   }
  */
-userType = new GraphQLObjectType({
+const userType = new GraphQLObjectType({
   name: "User",
   description: "A user.",
   interfaces: [nodeInterface], // can be () => [nodeInterface]
@@ -110,6 +108,8 @@ userType = new GraphQLObjectType({
     },
   }),
 });
+
+typeStore.register("User", userType);
 
 /**
  * This is the type that will be the root of our query, and the
