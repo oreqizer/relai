@@ -7,8 +7,9 @@ import type { RelayProp } from "react-relay";
 import Input from "client/components/Input";
 import Footer from "client/components/Footer";
 import type { UserInfo_info } from "./__generated__/UserInfo_info.graphql";
-import TodoItem from "./components/TodoItem/index";
-import ToggleAll from "./components/ToggleAll/index";
+import TodoItem from "./components/TodoItem";
+import ToggleAll from "./components/ToggleAll";
+import TodoCount from "./components/TodoCount";
 import createTodo from "./mutations/createTodo";
 import markTodosComplete from "./mutations/markTodosComplete";
 
@@ -35,7 +36,7 @@ const Main = styled.section`
 const Ul = styled.ul`
   margin: 0;
   padding: 0;
-  data-style: none;
+  list-style: none;
 `;
 
 type Props = {|
@@ -102,7 +103,11 @@ class UserInfo extends React.PureComponent<Props, State> {
             </Ul>
           </Main>
         </header>
-        <Footer />
+        {info.countTodos > 0 && (
+          <Footer>
+            <TodoCount>{info.countTodos - info.countTodosComplete}</TodoCount>
+          </Footer>
+        )}
       </Section>
     );
   }
