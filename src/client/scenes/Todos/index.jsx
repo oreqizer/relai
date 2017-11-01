@@ -51,7 +51,7 @@ class Todos extends React.Component<Props, State> {
         <QueryRenderer
           environment={environment}
           query={graphql`
-            query TodosQuery($user: String!, $show: ShowType!) {
+            query TodosQuery($user: String!) {
               user(name: $user) {
                 ...TodoList_info
               }
@@ -65,7 +65,7 @@ class Todos extends React.Component<Props, State> {
             }
 
             if (res.props) {
-              return <TodoList info={res.props.user} />;
+              return <TodoList info={res.props.user} show={show} />;
             }
 
             return null;

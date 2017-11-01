@@ -25,13 +25,7 @@ export type TodoList_info = {|
 
 
 const fragment /*: ConcreteFragment*/ = {
-  "argumentDefinitions": [
-    {
-      "kind": "RootArgument",
-      "name": "show",
-      "type": "ShowType"
-    }
-  ],
+  "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": {
     "connection": [

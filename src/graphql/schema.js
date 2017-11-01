@@ -118,7 +118,7 @@ const userType = new GraphQLObjectType({
       args: Object.assign({}, relay.connectionArgs, {
         show: {
           type: showType,
-          defaultValue: "ALL",
+          defaultValue: "all",
         },
       }),
       resolve: (user, args) => {

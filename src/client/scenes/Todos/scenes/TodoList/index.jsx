@@ -40,8 +40,30 @@ const Ul = styled.ul`
   list-style: none;
 `;
 
+function getTodos(show: *, info: TodoList_info) {
+  if (!info.todos || !info.todos.edges) {
+    return [];
+  }
+
+  const todos = info.todos.edges
+    .filter(Boolean)
+    .map(({ node }) => node)
+    .filter(Boolean);
+
+  if (show === "active") {
+    return todos.filter(todo => !todo.complete);
+  }
+
+  if (show === "complete") {
+    return todos.filter(todo => todo.complete);
+  }
+
+  return todos;
+}
+
 type Props = {|
   info: TodoList_info,
+  show: "all" | "active" | "complete",
   relay: RelayProp,
 |};
 
@@ -77,7 +99,7 @@ class TodoList extends React.PureComponent<Props, State> {
 
   render() {
     const { value } = this.state;
-    const { info } = this.props;
+    const { info, show } = this.props;
 
     if (!info.todos || !info.todos.edges) {
       return null;
@@ -98,9 +120,7 @@ class TodoList extends React.PureComponent<Props, State> {
               onChange={this.handleToggleAll}
             />
             <Ul>
-              {info.todos.edges
-                .filter(Boolean)
-                .map(({ node }) => node && <TodoItem key={node.id} item={node} user={info} />)}
+              {getTodos(show, info).map(todo => <TodoItem key={todo.id} item={todo} user={info} />)}
             </Ul>
           </Main>
         </header>
@@ -124,7 +144,6 @@ export default createFragmentContainer(
       countTodosComplete
       todos(
         first: 10000000 # A random big number
-        show: $show
       ) @connection(key: "TodoList_todos", filters: []) {
         edges {
           node {

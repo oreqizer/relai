@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash d80a205db8a6ee0ba870ad29e90d3ad4
+ * @relayHash c19a0fc2ded662403c01bd34e249254c
  */
 
 /* eslint-disable */
@@ -18,7 +18,6 @@ export type TodosQueryResponse = {|
 /*
 query TodosQuery(
   $user: String!
-  $show: ShowType!
 ) {
   user(name: $user) {
     ...TodoList_info
@@ -30,7 +29,7 @@ fragment TodoList_info on User {
   id
   countTodos
   countTodosComplete
-  todos(first: 10000000, show: $show) {
+  todos(first: 10000000) {
     edges {
       node {
         __typename
@@ -61,12 +60,6 @@ const batch /*: ConcreteBatch*/ = {
         "kind": "LocalArgument",
         "name": "user",
         "type": "String!",
-        "defaultValue": null
-      },
-      {
-        "kind": "LocalArgument",
-        "name": "show",
-        "type": "ShowType!",
         "defaultValue": null
       }
     ],
@@ -110,12 +103,6 @@ const batch /*: ConcreteBatch*/ = {
         "kind": "LocalArgument",
         "name": "user",
         "type": "String!",
-        "defaultValue": null
-      },
-      {
-        "kind": "LocalArgument",
-        "name": "show",
-        "type": "ShowType!",
         "defaultValue": null
       }
     ],
@@ -168,12 +155,6 @@ const batch /*: ConcreteBatch*/ = {
                 "name": "first",
                 "value": 10000000,
                 "type": "Int"
-              },
-              {
-                "kind": "Variable",
-                "name": "show",
-                "variableName": "show",
-                "type": "ShowType"
               }
             ],
             "concreteType": "TodoConnection",
@@ -263,7 +244,7 @@ const batch /*: ConcreteBatch*/ = {
                 "storageKey": null
               }
             ],
-            "storageKey": null
+            "storageKey": "todos{\"first\":10000000}"
           },
           {
             "kind": "LinkedHandle",
@@ -274,12 +255,6 @@ const batch /*: ConcreteBatch*/ = {
                 "name": "first",
                 "value": 10000000,
                 "type": "Int"
-              },
-              {
-                "kind": "Variable",
-                "name": "show",
-                "variableName": "show",
-                "type": "ShowType"
               }
             ],
             "handle": "connection",
@@ -292,7 +267,7 @@ const batch /*: ConcreteBatch*/ = {
       }
     ]
   },
-  "text": "query TodosQuery(\n  $user: String!\n  $show: ShowType!\n) {\n  user(name: $user) {\n    ...TodoList_info\n    id\n  }\n}\n\nfragment TodoList_info on User {\n  id\n  countTodos\n  countTodosComplete\n  todos(first: 10000000, show: $show) {\n    edges {\n      node {\n        __typename\n        id\n        complete\n        ...TodoItem_item\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment TodoItem_item on Todo {\n  id\n  text\n  complete\n}\n"
+  "text": "query TodosQuery(\n  $user: String!\n) {\n  user(name: $user) {\n    ...TodoList_info\n    id\n  }\n}\n\nfragment TodoList_info on User {\n  id\n  countTodos\n  countTodosComplete\n  todos(first: 10000000) {\n    edges {\n      node {\n        __typename\n        id\n        complete\n        ...TodoItem_item\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment TodoItem_item on Todo {\n  id\n  text\n  complete\n}\n"
 };
 
 module.exports = batch;
