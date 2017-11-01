@@ -40,27 +40,6 @@ const Ul = styled.ul`
   list-style: none;
 `;
 
-function getTodos(show: *, info: TodoList_info) {
-  if (!info.todos || !info.todos.edges) {
-    return [];
-  }
-
-  const todos = info.todos.edges
-    .filter(Boolean)
-    .map(({ node }) => node)
-    .filter(Boolean);
-
-  if (show === "active") {
-    return todos.filter(todo => !todo.complete);
-  }
-
-  if (show === "complete") {
-    return todos.filter(todo => todo.complete);
-  }
-
-  return todos;
-}
-
 type Props = {|
   info: TodoList_info,
   show: "all" | "active" | "complete",
@@ -105,6 +84,21 @@ class TodoList extends React.PureComponent<Props, State> {
       return null;
     }
 
+    const todos = info.todos.edges
+      .filter(Boolean)
+      .map(({ node }) => node)
+      .filter(todo => {
+        if (show === "active") {
+          return todo && !todo.complete;
+        }
+
+        if (show === "complete") {
+          return todo && todo.complete;
+        }
+
+        return true;
+      });
+
     return (
       <Section>
         <header>
@@ -119,9 +113,7 @@ class TodoList extends React.PureComponent<Props, State> {
               checked={info.countTodos > 0 && info.countTodos === info.countTodosComplete}
               onChange={this.handleToggleAll}
             />
-            <Ul>
-              {getTodos(show, info).map(todo => <TodoItem key={todo.id} item={todo} user={info} />)}
-            </Ul>
+            <Ul>{todos.map(todo => todo && <TodoItem key={todo.id} item={todo} user={info} />)}</Ul>
           </Main>
         </header>
         {info.countTodos > 0 && (
