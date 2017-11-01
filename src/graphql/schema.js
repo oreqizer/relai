@@ -1,6 +1,8 @@
 const {
   GraphQLID,
   GraphQLBoolean,
+  GraphQLInt,
+  GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLSchema,
@@ -105,6 +107,16 @@ const userType = new GraphQLObjectType({
       description: "User's todos.",
       args: relay.connectionArgs,
       resolve: (user, args) => relay.connectionFromArray(user.todos.map(db.getTodo), args),
+    },
+    countTodos: {
+      type: new GraphQLNonNull(GraphQLInt),
+      description: "Number of user's todos.",
+      resolve: user => user.todos.map(db.getTodo).length,
+    },
+    countTodosComplete: {
+      type: new GraphQLNonNull(GraphQLInt),
+      description: "Number of user's completed todos.",
+      resolve: user => user.todos.map(db.getTodo).filter(todo => todo.complete).length,
     },
   }),
 });
@@ -288,6 +300,48 @@ const deleteTodoMutation = relay.mutationWithClientMutationId({
 });
 
 /**
+ * This will return a GraphQLFieldConfig for our mark todos complete
+ * mutation.
+ *
+ * It creates these two types implicitly:
+ *   input MarkTodosCompleteInput {
+ *     userId: ID!
+ *     complete: Boolean!
+ *   }
+ *
+ *   type MarkTodosCompletePayload {
+ *     updatedTodos: [Todo!]
+ *     clientMutationId: String
+ *   }
+ */
+const markTodosCompleteMutation = relay.mutationWithClientMutationId({
+  name: "MarkTodosComplete",
+  inputFields: {
+    userId: {
+      type: new GraphQLNonNull(GraphQLID),
+    },
+    complete: {
+      type: new GraphQLNonNull(GraphQLBoolean),
+    },
+  },
+  outputFields: {
+    updatedTodos: {
+      type: new GraphQLNonNull(new GraphQLList(todoType)),
+      resolve: payload => payload.updatedLocalIds.map(db.getTodo),
+    },
+    user: {
+      type: new GraphQLNonNull(userType),
+      resolve: payload => db.getUser(payload.localUserId),
+    },
+  },
+  mutateAndGetPayload: ({ userId, complete }) => {
+    const localUserId = relay.fromGlobalId(userId).id;
+    const updatedLocalIds = db.markTodosComplete(localUserId, complete);
+    return { localUserId, updatedLocalIds };
+  },
+});
+
+/**
  * This is the type that will be the root of our mutations, and the
  * entry point into performing writes in our schema.
  *
@@ -304,6 +358,7 @@ const mutationType = new GraphQLObjectType({
     createTodo: createTodoMutation,
     updateTodo: updateTodoMutation,
     deleteTodo: deleteTodoMutation,
+    markTodosComplete: markTodosCompleteMutation,
   }),
 });
 

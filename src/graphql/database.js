@@ -9,7 +9,7 @@ const DB = {
 
 // Lookups
 const Lookups = {
-  userIdToName: {},
+  userNameToId: {},
 };
 
 const newUser = ({ id, name }) => ({
@@ -31,14 +31,14 @@ function getUser(id) {
 }
 
 function getUserByName(name) {
-  return DB.users[Lookups.userIdToName[name]];
+  return DB.users[Lookups.userNameToId[name]];
 }
 
 function createUser(name) {
   const id = v4();
   const user = newUser({ id, name });
 
-  Lookups.userIdToName[id] = name;
+  Lookups.userNameToId[name] = id;
   DB.users[id] = user;
   return user;
 }
@@ -80,6 +80,17 @@ function deleteTodo(userId, id) {
   return id;
 }
 
+function markTodosComplete(userId, complete) {
+  const updatedTodoIds = DB.users[userId].todos.filter(id => DB.todos[id].complete !== complete);
+
+  // Mutation!!
+  DB.users[userId].todos.forEach(id => {
+    DB.todos[id].complete = complete;
+  });
+
+  return updatedTodoIds;
+}
+
 module.exports = {
   getUser,
   getUserByName,
@@ -88,4 +99,5 @@ module.exports = {
   createTodo,
   updateTodo,
   deleteTodo,
+  markTodosComplete,
 };
