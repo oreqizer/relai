@@ -13,6 +13,7 @@ import TodoCount from "./components/TodoCount";
 import Filters from "./components/Filters";
 import createTodo from "./mutations/createTodo";
 import markTodosComplete from "./mutations/markTodosComplete";
+import clearCompleteTodos from "./mutations/clearCompleteTodos";
 
 const Section = styled.section`
   background: #fff;
@@ -38,6 +39,18 @@ const Ul = styled.ul`
   margin: 0;
   padding: 0;
   list-style: none;
+`;
+
+const Button = styled.button`
+  float: right;
+  position: relative;
+  line-height: 20px;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 type Props = {|
@@ -74,6 +87,12 @@ class TodoList extends React.PureComponent<Props, State> {
     if (ev.target instanceof HTMLInputElement) {
       markTodosComplete(environment, info, ev.target.checked);
     }
+  };
+
+  handleClearCompleted = () => {
+    const { info, relay: { environment } } = this.props;
+
+    clearCompleteTodos(environment, info);
   };
 
   render() {
@@ -120,6 +139,9 @@ class TodoList extends React.PureComponent<Props, State> {
           <Footer>
             <TodoCount>{info.countTodos - info.countTodosComplete}</TodoCount>
             <Filters />
+            {info.countTodosComplete > 0 && (
+              <Button onClick={this.handleClearCompleted}>Clear completed</Button>
+            )}
           </Footer>
         )}
       </Section>

@@ -404,9 +404,9 @@ const clearCompleteTodosMutation = relay.mutationWithClientMutationId({
     },
   },
   outputFields: {
-    deletedTodos: {
-      type: new GraphQLNonNull(new GraphQLList(todoType)),
-      resolve: payload => payload.deletedLocalIds.map(db.getTodo),
+    deletedTodoIds: {
+      type: new GraphQLNonNull(new GraphQLList(GraphQLID)),
+      resolve: payload => payload.deletedLocalIds.map(id => relay.toGlobalId("Todo", id)),
     },
     user: {
       type: new GraphQLNonNull(userType),

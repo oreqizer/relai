@@ -92,7 +92,9 @@ function markTodosComplete(userId, complete) {
 }
 
 function clearCompleteTodos(userId) {
+  const leftoverTodos = DB.users[userId].todos.filter(id => !DB.todos[id].complete);
   const removedTodoIds = DB.users[userId].todos.filter(id => DB.todos[id].complete);
+  DB.users[userId].todos = leftoverTodos;
 
   // Mutation!!
   removedTodoIds.forEach(id => {

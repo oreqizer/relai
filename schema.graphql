@@ -1,5 +1,5 @@
 # source: http://localhost:8081/graphql
-# timestamp: Wed Nov 01 2017 17:46:17 GMT+0100 (CET)
+# timestamp: Wed Nov 01 2017 18:05:46 GMT+0100 (CET)
 
 input ClearCompleteTodosInput {
   userId: ID!
@@ -7,7 +7,7 @@ input ClearCompleteTodosInput {
 }
 
 type ClearCompleteTodosPayload {
-  deletedTodos: [Todo]!
+  deletedTodoIds: [ID]!
   user: User!
   clientMutationId: String
 }
