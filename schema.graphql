@@ -1,4 +1,4 @@
-# source: http://localhost:8081/graphql
+# source: http://relai-graphql.herokuapp.com/graphql
 # timestamp: Wed Nov 01 2017 18:05:46 GMT+0100 (CET)
 
 input ClearCompleteTodosInput {
