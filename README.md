@@ -4,8 +4,9 @@ A small project for trying out GraphQL and Relay. :grapes:
 
 ## TODO
 
-- [ ] Use `graphql-relay`
+- [x] Use `graphql-relay`
 - [ ] Check/uncheck all
+- [ ] Footer
 - [ ] Filters
 - [ ] Pagination
 - [ ] Todos count
