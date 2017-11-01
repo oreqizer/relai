@@ -145,7 +145,22 @@ const queryType = new GraphQLObjectType({
   }),
 });
 
-// TODO comment like from 'https://github.com/graphql/graphql-relay-js/blob/master/src/__tests__/starWarsSchema.js'
+/**
+ * This will return a GraphQLFieldConfig for our create todo
+ * mutation.
+ *
+ * It creates these two types implicitly:
+ *   input CreateTodoInput {
+ *     userId: ID!
+ *     text: String!
+ *     clientMutationId: String
+ *   }
+ *
+ *   type CreateTodoPayload {
+ *     todoEdge: TodoEdge
+ *     clientMutationId: String
+ *   }
+ */
 const createTodoMutation = relay.mutationWithClientMutationId({
   name: "CreateTodo",
   inputFields: {
@@ -177,7 +192,24 @@ const createTodoMutation = relay.mutationWithClientMutationId({
   },
 });
 
-// TODO comment like from 'https://github.com/graphql/graphql-relay-js/blob/master/src/__tests__/starWarsSchema.js'
+/**
+ * This will return a GraphQLFieldConfig for our update todo
+ * mutation.
+ *
+ * It creates these two types implicitly:
+ *   input UpdateTodoInput {
+ *     userId: ID!
+ *     id: ID!
+ *     text: String!
+ *     complete: Boolean!
+ *     clientMutationId: String
+ *   }
+ *
+ *   type UpdateTodoPayload {
+ *     todoEdge: TodoEdge
+ *     clientMutationId: String
+ *   }
+ */
 const updateTodoMutation = relay.mutationWithClientMutationId({
   name: "UpdateTodo",
   inputFields: {
@@ -216,7 +248,21 @@ const updateTodoMutation = relay.mutationWithClientMutationId({
   },
 });
 
-// TODO comment like from 'https://github.com/graphql/graphql-relay-js/blob/master/src/__tests__/starWarsSchema.js'
+/**
+ * This will return a GraphQLFieldConfig for our delete todo
+ * mutation.
+ *
+ * It creates these two types implicitly:
+ *   input DeleteTodoInput {
+ *     userId: ID!
+ *     todoId: ID!
+ *   }
+ *
+ *   type DeleteTodoPayload {
+ *     deletedId: ID!
+ *     clientMutationId: String
+ *   }
+ */
 const deleteTodoMutation = relay.mutationWithClientMutationId({
   name: "DeleteTodo",
   inputFields: {
