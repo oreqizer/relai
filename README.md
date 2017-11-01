@@ -14,6 +14,10 @@ A small project for trying out GraphQL and Relay. :grapes:
 - [x] Clear complete
 - [ ] Pagination
 
+## Notes
+
+Run `heroku config:set NPM_CONFIG_PRODUCTION=false` when deploying to Heroku.
+
 ## Credits
 
 * CSS from [TodoMVC](https://github.com/tastejs/todomvc-app-css)
