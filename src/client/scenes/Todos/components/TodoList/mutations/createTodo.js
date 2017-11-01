@@ -3,6 +3,8 @@ import { commitMutation, graphql } from "react-relay";
 import type { Environment } from "react-relay";
 import v4 from "uuid/v4";
 
+import type { createTodoMutationVariables } from "./__generated__/createTodoMutation.graphql";
+
 const mutation = graphql`
   mutation createTodoMutation($input: CreateTodoInput!) {
     createTodo(input: $input) {
@@ -25,7 +27,7 @@ const mutation = graphql`
 
 function createTodo(environment: Environment, userId: string, text: string) {
   const mutationId = v4();
-  const variables = {
+  const variables: createTodoMutationVariables = {
     input: {
       userId,
       text,
@@ -33,23 +35,25 @@ function createTodo(environment: Environment, userId: string, text: string) {
     },
   };
 
+  // TODO user counts
+  // const optimisticResponse: createTodoMutationResponse = {
+  //   createTodo: {
+  //     todoEdge: {
+  //       cursor: mutationId,
+  //       node: {
+  //         id: mutationId,
+  //         text,
+  //         complete: false,
+  //       },
+  //     },
+  //     clientMutationId: mutationId,
+  //   },
+  // },
+
   commitMutation(environment, {
     mutation,
     variables,
-    // TODO adjust user counts
-    // optimisticResponse: {
-    //   createTodo: {
-    //     todoEdge: {
-    //       cursor: mutationId,
-    //       node: {
-    //         id: mutationId,
-    //         text,
-    //         complete: false,
-    //       },
-    //     },
-    //     clientMutationId: mutationId,
-    //   },
-    // },
+    // optimisticResponse,
     configs: [
       {
         type: "RANGE_ADD",

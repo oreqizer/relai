@@ -3,6 +3,8 @@ import { commitMutation, graphql } from "react-relay";
 import type { Environment } from "react-relay";
 import v4 from "uuid/v4";
 
+import type { deleteTodoMutationVariables } from "./__generated__/deleteTodoMutation.graphql";
+
 const mutation = graphql`
   mutation deleteTodoMutation($input: DeleteTodoInput!) {
     deleteTodo(input: $input) {
@@ -19,7 +21,7 @@ const mutation = graphql`
 
 function deleteTodo(environment: Environment, userId: string, todoId: string) {
   const mutationId = v4();
-  const variables = {
+  const variables: deleteTodoMutationVariables = {
     input: {
       userId,
       todoId,
@@ -27,16 +29,15 @@ function deleteTodo(environment: Environment, userId: string, todoId: string) {
     },
   };
 
+  // TODO user counts
+  // const optimisticResponse: deleteTodoMutationResponse = {
+  //
+  // }
+
   commitMutation(environment, {
     mutation,
     variables,
-    // TODO adjust user counts
-    // optimisticResponse: {
-    //   deleteTodo: {
-    //     deletedId: todoId,
-    //     clientMutationId: mutationId,
-    //   },
-    // },
+    // optimisticResponse,
     configs: [
       {
         type: "NODE_DELETE",

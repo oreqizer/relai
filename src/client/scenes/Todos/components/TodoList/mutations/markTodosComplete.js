@@ -3,6 +3,8 @@ import { commitMutation, graphql } from "react-relay";
 import type { Environment } from "react-relay";
 import v4 from "uuid/v4";
 
+import type { markTodosCompleteMutationVariables } from "./__generated__/markTodosCompleteMutation.graphql"
+
 const mutation = graphql`
   mutation markTodosCompleteMutation($input: MarkTodosCompleteInput!) {
     markTodosComplete(input: $input) {
@@ -22,7 +24,7 @@ const mutation = graphql`
 
 function markTodosComplete(environment: Environment, userId: string, complete: boolean) {
   const mutationId = v4();
-  const variables = {
+  const variables: markTodosCompleteMutationVariables = {
     input: {
       userId,
       complete,
@@ -30,13 +32,15 @@ function markTodosComplete(environment: Environment, userId: string, complete: b
     },
   };
 
+  // TODO
+  // const optimisticResponse: markTodosCompleteMutationResponse = {
+  //
+  // };
+
   commitMutation(environment, {
     mutation,
     variables,
-    // TODO
-    // optimisticResponse: {
-    //
-    // },
+    // optimisticResponse,
   });
 }
 

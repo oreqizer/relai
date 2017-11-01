@@ -3,6 +3,7 @@ import { commitMutation, graphql } from "react-relay";
 import type { Environment } from "react-relay";
 import v4 from "uuid/v4";
 
+import type { updateTodoMutationVariables } from "./__generated__/updateTodoMutation.graphql";
 import type { TodoItem_item } from "../__generated__/TodoItem_item.graphql";
 
 const mutation = graphql`
@@ -28,7 +29,7 @@ const mutation = graphql`
 
 function updateTodo(environment: Environment, userId: string, todo: TodoItem_item) {
   const mutationId = v4();
-  const variables = {
+  const variables: updateTodoMutationVariables = {
     input: {
       userId,
       ...todo,
@@ -36,19 +37,21 @@ function updateTodo(environment: Environment, userId: string, todo: TodoItem_ite
     },
   };
 
+  // TODO adjust user counts
+  // const optimisticResponse: updateTodoMutationResponse = {
+  //   updateTodo: {
+  //     todoEdge: {
+  //       cursor: todo.id,
+  //       node: todo,
+  //     },
+  //     clientMutationId: mutationId,
+  //   },
+  // },
+
   commitMutation(environment, {
     mutation,
     variables,
-    // TODO adjust user counts
-    // optimisticResponse: {
-    //   updateTodo: {
-    //     todoEdge: {
-    //       cursor: todo.id,
-    //       node: todo,
-    //     },
-    //     clientMutationId: mutationId,
-    //   },
-    // },
+    // optimisticResponse,
   });
 }
 
