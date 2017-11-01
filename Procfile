@@ -1,1 +1,2 @@
-web: npm run graphql && npm run run
+web: npm run run
+graphql: npm run graphql

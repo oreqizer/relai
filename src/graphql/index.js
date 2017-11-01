@@ -20,6 +20,8 @@ app.use(
   }),
 );
 
-app.listen(8081, () => {
-  console.log("[graphql] Listening at 8081"); // eslint-disable-line no-console
+const port = process.env.PORT || 8081;
+
+app.listen(port, () => {
+  console.log(`[graphql] Listening at ${port}`); // eslint-disable-line no-console
 });
