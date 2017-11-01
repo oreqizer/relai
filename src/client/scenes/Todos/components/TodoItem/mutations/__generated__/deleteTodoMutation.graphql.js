@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 080340339c791dde301be608665304ed
+ * @relayHash 598226744a966ee6bb9b0b54ae4d5e54
  */
 
 /* eslint-disable */
@@ -19,6 +19,11 @@ export type deleteTodoMutationVariables = {|
 export type deleteTodoMutationResponse = {|
   +deleteTodo: ?{|
     +deletedId: string;
+    +user: {|
+      +id: string;
+      +countTodos: number;
+      +countTodosComplete: number;
+    |};
     +clientMutationId: ?string;
   |};
 |};
@@ -31,6 +36,11 @@ mutation deleteTodoMutation(
 ) {
   deleteTodo(input: $input) {
     deletedId
+    user {
+      id
+      countTodos
+      countTodosComplete
+    }
     clientMutationId
   }
 }
@@ -70,6 +80,38 @@ const batch /*: ConcreteBatch*/ = {
             "alias": null,
             "args": null,
             "name": "deletedId",
+            "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "args": null,
+            "concreteType": "User",
+            "name": "user",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "id",
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "countTodos",
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "countTodosComplete",
+                "storageKey": null
+              }
+            ],
             "storageKey": null
           },
           {
@@ -125,6 +167,38 @@ const batch /*: ConcreteBatch*/ = {
             "storageKey": null
           },
           {
+            "kind": "LinkedField",
+            "alias": null,
+            "args": null,
+            "concreteType": "User",
+            "name": "user",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "id",
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "countTodos",
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "countTodosComplete",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
             "kind": "ScalarField",
             "alias": null,
             "args": null,
@@ -136,7 +210,7 @@ const batch /*: ConcreteBatch*/ = {
       }
     ]
   },
-  "text": "mutation deleteTodoMutation(\n  $input: DeleteTodoInput!\n) {\n  deleteTodo(input: $input) {\n    deletedId\n    clientMutationId\n  }\n}\n"
+  "text": "mutation deleteTodoMutation(\n  $input: DeleteTodoInput!\n) {\n  deleteTodo(input: $input) {\n    deletedId\n    user {\n      id\n      countTodos\n      countTodosComplete\n    }\n    clientMutationId\n  }\n}\n"
 };
 
 module.exports = batch;

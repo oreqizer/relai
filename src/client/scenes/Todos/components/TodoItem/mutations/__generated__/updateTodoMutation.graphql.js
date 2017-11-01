@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 3db966adbbd34a35a2b30a4e64cc9156
+ * @relayHash b7f3fd745b66d96847eb66826d75fb37
  */
 
 /* eslint-disable */
@@ -28,6 +28,11 @@ export type updateTodoMutationResponse = {|
         +complete: boolean;
       |};
     |};
+    +user: {|
+      +id: string;
+      +countTodos: number;
+      +countTodosComplete: number;
+    |};
     +clientMutationId: ?string;
   |};
 |};
@@ -46,6 +51,11 @@ mutation updateTodoMutation(
         text
         complete
       }
+    }
+    user {
+      id
+      countTodos
+      countTodosComplete
     }
     clientMutationId
   }
@@ -126,6 +136,38 @@ const batch /*: ConcreteBatch*/ = {
                     "storageKey": null
                   }
                 ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "args": null,
+            "concreteType": "User",
+            "name": "user",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "id",
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "countTodos",
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "countTodosComplete",
                 "storageKey": null
               }
             ],
@@ -227,6 +269,38 @@ const batch /*: ConcreteBatch*/ = {
             "storageKey": null
           },
           {
+            "kind": "LinkedField",
+            "alias": null,
+            "args": null,
+            "concreteType": "User",
+            "name": "user",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "id",
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "countTodos",
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "countTodosComplete",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
             "kind": "ScalarField",
             "alias": null,
             "args": null,
@@ -238,7 +312,7 @@ const batch /*: ConcreteBatch*/ = {
       }
     ]
   },
-  "text": "mutation updateTodoMutation(\n  $input: UpdateTodoInput!\n) {\n  updateTodo(input: $input) {\n    todoEdge {\n      cursor\n      node {\n        id\n        text\n        complete\n      }\n    }\n    clientMutationId\n  }\n}\n"
+  "text": "mutation updateTodoMutation(\n  $input: UpdateTodoInput!\n) {\n  updateTodo(input: $input) {\n    todoEdge {\n      cursor\n      node {\n        id\n        text\n        complete\n      }\n    }\n    user {\n      id\n      countTodos\n      countTodosComplete\n    }\n    clientMutationId\n  }\n}\n"
 };
 
 module.exports = batch;

@@ -16,6 +16,11 @@ const mutation = graphql`
           complete
         }
       }
+      user {
+        id
+        countTodos
+        countTodosComplete
+      }
       clientMutationId
     }
   }
@@ -34,15 +39,16 @@ function updateTodo(environment: Environment, userId: string, todo: TodoItem_ite
   commitMutation(environment, {
     mutation,
     variables,
-    optimisticResponse: {
-      updateTodo: {
-        todoEdge: {
-          cursor: todo.id,
-          node: todo,
-        },
-        clientMutationId: mutationId,
-      },
-    },
+    // TODO adjust user counts
+    // optimisticResponse: {
+    //   updateTodo: {
+    //     todoEdge: {
+    //       cursor: todo.id,
+    //       node: todo,
+    //     },
+    //     clientMutationId: mutationId,
+    //   },
+    // },
   });
 }
 

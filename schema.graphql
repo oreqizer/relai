@@ -1,5 +1,5 @@
 # source: http://localhost:8081/graphql
-# timestamp: Wed Nov 01 2017 10:42:51 GMT+0100 (CET)
+# timestamp: Wed Nov 01 2017 11:03:13 GMT+0100 (CET)
 
 input CreateTodoInput {
   userId: ID!
@@ -9,6 +9,7 @@ input CreateTodoInput {
 
 type CreateTodoPayload {
   todoEdge: TodoEdge
+  user: User!
   clientMutationId: String
 }
 
@@ -20,6 +21,7 @@ input DeleteTodoInput {
 
 type DeleteTodoPayload {
   deletedId: ID!
+  user: User!
   clientMutationId: String
 }
 
@@ -111,6 +113,7 @@ input UpdateTodoInput {
 
 type UpdateTodoPayload {
   todoEdge: TodoEdge
+  user: User!
   clientMutationId: String
 }
 

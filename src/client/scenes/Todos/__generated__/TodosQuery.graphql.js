@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 4aea632f1006e6761f00ec2dfa75042e
+ * @relayHash 320b44d6f12e2e393e42460388b14e91
  */
 
 /* eslint-disable */
@@ -12,6 +12,8 @@ import type {ConcreteBatch} from 'relay-runtime';
 export type TodosQueryResponse = {|
   +user: ?{|
     +id: string;
+    +countTodos: number;
+    +countTodosComplete: number;
   |};
 |};
 */
@@ -23,6 +25,8 @@ query TodosQuery(
 ) {
   user(name: $user) {
     id
+    countTodos
+    countTodosComplete
     ...TodoList_list
   }
 }
@@ -88,6 +92,20 @@ const batch /*: ConcreteBatch*/ = {
             "storageKey": null
           },
           {
+            "kind": "ScalarField",
+            "alias": null,
+            "args": null,
+            "name": "countTodos",
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "args": null,
+            "name": "countTodosComplete",
+            "storageKey": null
+          },
+          {
             "kind": "FragmentSpread",
             "name": "TodoList_list",
             "args": null
@@ -135,6 +153,20 @@ const batch /*: ConcreteBatch*/ = {
             "alias": null,
             "args": null,
             "name": "id",
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "args": null,
+            "name": "countTodos",
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "args": null,
+            "name": "countTodosComplete",
             "storageKey": null
           },
           {
@@ -258,7 +290,7 @@ const batch /*: ConcreteBatch*/ = {
       }
     ]
   },
-  "text": "query TodosQuery(\n  $user: String!\n) {\n  user(name: $user) {\n    id\n    ...TodoList_list\n  }\n}\n\nfragment TodoList_list on User {\n  todos(first: 10000000) {\n    edges {\n      node {\n        __typename\n        id\n        ...TodoItem_item\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment TodoItem_item on Todo {\n  id\n  text\n  complete\n}\n"
+  "text": "query TodosQuery(\n  $user: String!\n) {\n  user(name: $user) {\n    id\n    countTodos\n    countTodosComplete\n    ...TodoList_list\n  }\n}\n\nfragment TodoList_list on User {\n  todos(first: 10000000) {\n    edges {\n      node {\n        __typename\n        id\n        ...TodoItem_item\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment TodoItem_item on Todo {\n  id\n  text\n  complete\n}\n"
 };
 
 module.exports = batch;

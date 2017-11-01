@@ -19,6 +19,8 @@ const Todos = (props: Props) => (
         query TodosQuery($user: String!) {
           user(name: $user) {
             id
+            countTodos
+            countTodosComplete
             ...TodoList_list
           }
         }
@@ -31,7 +33,14 @@ const Todos = (props: Props) => (
         }
 
         if (res.props) {
-          return <TodoList list={res.props.user} userId={res.props.user.id} />;
+          return (
+            <TodoList
+              list={res.props.user}
+              userId={res.props.user.id}
+              todosAll={res.props.user.countTodos}
+              todosComplete={res.props.user.countTodosComplete}
+            />
+          );
         }
 
         return null;

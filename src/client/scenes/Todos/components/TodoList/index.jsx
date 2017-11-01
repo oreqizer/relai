@@ -9,6 +9,7 @@ import type { TodoList_list } from "./__generated__/TodoList_list.graphql";
 import TodoItem from "../TodoItem";
 import ToggleAll from "../ToggleAll";
 import createTodo from "./mutations/createTodo";
+import markTodosComplete from "./mutations/markTodosComplete";
 
 const Section = styled.section`
   background: #fff;
@@ -40,6 +41,8 @@ type Props = {|
   userId: string,
   list: TodoList_list,
   relay: RelayProp,
+  todosAll: number,
+  todosComplete: number,
 |};
 
 type State = {|
@@ -65,14 +68,16 @@ class TodoList extends React.PureComponent<Props, State> {
   };
 
   handleToggleAll = (ev: SyntheticEvent<HTMLInputElement>) => {
+    const { userId, relay: { environment } } = this.props;
+
     if (ev.target instanceof HTMLInputElement) {
-      // check/uncheck all
+      markTodosComplete(environment, userId, ev.target.checked);
     }
   };
 
   render() {
     const { value } = this.state;
-    const { list, userId } = this.props;
+    const { list, userId, todosAll, todosComplete } = this.props;
 
     if (!list.todos || !list.todos.edges) {
       return null;
@@ -88,7 +93,10 @@ class TodoList extends React.PureComponent<Props, State> {
             onKeyPress={this.handleKeyPress}
           />
           <Main>
-            <ToggleAll checked={false} onChange={this.handleToggleAll} />
+            <ToggleAll
+              checked={todosAll > 0 && todosAll === todosComplete}
+              onChange={this.handleToggleAll}
+            />
             <Ul>
               {list.todos.edges
                 .filter(edge => edge.node !== null)

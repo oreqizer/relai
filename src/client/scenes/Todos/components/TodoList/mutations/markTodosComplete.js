@@ -4,9 +4,12 @@ import type { Environment } from "react-relay";
 import v4 from "uuid/v4";
 
 const mutation = graphql`
-  mutation deleteTodoMutation($input: DeleteTodoInput!) {
-    deleteTodo(input: $input) {
-      deletedId
+  mutation markTodosCompleteMutation($input: MarkTodosCompleteInput!) {
+    markTodosComplete(input: $input) {
+      updatedTodos {
+        id
+        complete
+      }
       user {
         id
         countTodos
@@ -17,12 +20,12 @@ const mutation = graphql`
   }
 `;
 
-function deleteTodo(environment: Environment, userId: string, todoId: string) {
+function markTodosComplete(environment: Environment, userId: string, complete: boolean) {
   const mutationId = v4();
   const variables = {
     input: {
       userId,
-      todoId,
+      complete,
       clientMutationId: mutationId,
     },
   };
@@ -30,20 +33,11 @@ function deleteTodo(environment: Environment, userId: string, todoId: string) {
   commitMutation(environment, {
     mutation,
     variables,
-    // TODO adjust user counts
+    // TODO
     // optimisticResponse: {
-    //   deleteTodo: {
-    //     deletedId: todoId,
-    //     clientMutationId: mutationId,
-    //   },
+    //
     // },
-    configs: [
-      {
-        type: "NODE_DELETE",
-        deletedIDFieldName: "deletedId",
-      },
-    ],
   });
 }
 
-export default deleteTodo;
+export default markTodosComplete;
