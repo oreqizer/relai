@@ -28,6 +28,9 @@
     "relay",
     "graphql"
   ],
+  "engines": {
+    "node": ">=8"
+  },
   "author": "oreqizer",
   "license": "MIT",
   "dependencies": {
