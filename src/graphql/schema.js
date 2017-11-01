@@ -383,6 +383,44 @@ const markTodosCompleteMutation = relay.mutationWithClientMutationId({
 });
 
 /**
+ * This will return a GraphQLFieldConfig for our clear complete todos
+ * mutation.
+ *
+ * It creates these two types implicitly:
+ *   input ClearCompleteTodosInput {
+ *     userId: ID!
+ *   }
+ *
+ *   type ClearCompleteTodosPayload {
+ *     deletedTodos: [Todo!]
+ *     clientMutationId: String
+ *   }
+ */
+const clearCompleteTodosMutation = relay.mutationWithClientMutationId({
+  name: "ClearCompleteTodos",
+  inputFields: {
+    userId: {
+      type: new GraphQLNonNull(GraphQLID),
+    },
+  },
+  outputFields: {
+    deletedTodos: {
+      type: new GraphQLNonNull(new GraphQLList(todoType)),
+      resolve: payload => payload.deletedLocalIds.map(db.getTodo),
+    },
+    user: {
+      type: new GraphQLNonNull(userType),
+      resolve: payload => db.getUser(payload.localUserId),
+    },
+  },
+  mutateAndGetPayload: ({ userId }) => {
+    const localUserId = relay.fromGlobalId(userId).id;
+    const deletedLocalIds = db.clearCompleteTodos(localUserId);
+    return { localUserId, deletedLocalIds };
+  },
+});
+
+/**
  * This is the type that will be the root of our mutations, and the
  * entry point into performing writes in our schema.
  *
@@ -400,6 +438,7 @@ const mutationType = new GraphQLObjectType({
     updateTodo: updateTodoMutation,
     deleteTodo: deleteTodoMutation,
     markTodosComplete: markTodosCompleteMutation,
+    clearCompleteTodos: clearCompleteTodosMutation,
   }),
 });
 

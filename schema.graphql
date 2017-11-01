@@ -1,5 +1,16 @@
 # source: http://localhost:8081/graphql
-# timestamp: Wed Nov 01 2017 17:35:51 GMT+0100 (CET)
+# timestamp: Wed Nov 01 2017 17:46:17 GMT+0100 (CET)
+
+input ClearCompleteTodosInput {
+  userId: ID!
+  clientMutationId: String
+}
+
+type ClearCompleteTodosPayload {
+  deletedTodos: [Todo]!
+  user: User!
+  clientMutationId: String
+}
 
 input CreateTodoInput {
   userId: ID!
@@ -42,6 +53,7 @@ type Mutation {
   updateTodo(input: UpdateTodoInput!): UpdateTodoPayload
   deleteTodo(input: DeleteTodoInput!): DeleteTodoPayload
   markTodosComplete(input: MarkTodosCompleteInput!): MarkTodosCompletePayload
+  clearCompleteTodos(input: ClearCompleteTodosInput!): ClearCompleteTodosPayload
 }
 
 # An object with an ID

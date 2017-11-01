@@ -91,6 +91,17 @@ function markTodosComplete(userId, complete) {
   return updatedTodoIds;
 }
 
+function clearCompleteTodos(userId) {
+  const removedTodoIds = DB.users[userId].todos.filter(id => DB.todos[id].complete);
+
+  // Mutation!!
+  removedTodoIds.forEach(id => {
+    delete DB.todos[id];
+  });
+
+  return removedTodoIds;
+}
+
 module.exports = {
   getUser,
   getUserByName,
@@ -100,4 +111,5 @@ module.exports = {
   updateTodo,
   deleteTodo,
   markTodosComplete,
+  clearCompleteTodos,
 };
