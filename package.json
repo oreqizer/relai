@@ -19,7 +19,8 @@
     "flow": "flow",
     "flow:check": "flow check",
     "clean": "rimraf .tmp dist",
-    "clean:server": "rimraf dist/server/index.css"
+    "clean:server": "rimraf dist/server/index.css",
+    "postinstall": "npm run bundle:min"
   },
   "keywords": [
     "react",
