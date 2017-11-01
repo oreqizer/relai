@@ -1,6 +1,7 @@
 const {
   GraphQLID,
   GraphQLBoolean,
+  GraphQLEnumType,
   GraphQLInt,
   GraphQLList,
   GraphQLNonNull,
@@ -62,6 +63,15 @@ const todoType = new GraphQLObjectType({
 
 typeStore.register("Todo", todoType);
 
+const showType = new GraphQLEnumType({
+  name: "ShowType",
+  values: {
+    all: {},
+    active: {},
+    complete: {},
+  },
+});
+
 /**
  * We define a connection between a user and his todos.
  *
@@ -105,8 +115,25 @@ const userType = new GraphQLObjectType({
     todos: {
       type: todoConnection,
       description: "User's todos.",
-      args: relay.connectionArgs,
-      resolve: (user, args) => relay.connectionFromArray(user.todos.map(db.getTodo), args),
+      args: Object.assign({}, relay.connectionArgs, {
+        show: {
+          type: showType,
+          defaultValue: "ALL",
+        },
+      }),
+      resolve: (user, args) => {
+        const todos = user.todos.map(db.getTodo);
+        switch (args.show) {
+          case "all":
+            return relay.connectionFromArray(todos, args);
+          case "active":
+            return relay.connectionFromArray(todos.filter(todo => !todo.complete), args);
+          case "complete":
+            return relay.connectionFromArray(todos.filter(todo => todo.complete), args);
+          default:
+            return null;
+        }
+      },
     },
     countTodos: {
       type: new GraphQLNonNull(GraphQLInt),

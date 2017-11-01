@@ -1,5 +1,5 @@
 # source: http://localhost:8081/graphql
-# timestamp: Wed Nov 01 2017 11:03:13 GMT+0100 (CET)
+# timestamp: Wed Nov 01 2017 16:59:24 GMT+0100 (CET)
 
 input CreateTodoInput {
   userId: ID!
@@ -75,6 +75,12 @@ type Query {
   ): Node
 }
 
+enum ShowType {
+  ALL
+  ACTIVE
+  COMPLETE
+}
+
 # A todo item.
 type Todo implements Node {
   # The ID of an object
@@ -126,7 +132,7 @@ type User implements Node {
   name: String!
 
   # User's todos.
-  todos(after: String, first: Int, before: String, last: Int): TodoConnection
+  todos(after: String, first: Int, before: String, last: Int, show: ShowType): TodoConnection
 
   # Number of user's todos.
   countTodos: Int!

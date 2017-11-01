@@ -6,10 +6,11 @@ import type { RelayProp } from "react-relay";
 
 import Input from "client/components/Input";
 import Footer from "client/components/Footer";
-import type { UserInfo_info } from "./__generated__/UserInfo_info.graphql";
+import type { TodoList_info } from "./__generated__/TodoList_info.graphql";
 import TodoItem from "./components/TodoItem";
 import ToggleAll from "./components/ToggleAll";
 import TodoCount from "./components/TodoCount";
+import Filters from "./components/Filters";
 import createTodo from "./mutations/createTodo";
 import markTodosComplete from "./mutations/markTodosComplete";
 
@@ -40,7 +41,7 @@ const Ul = styled.ul`
 `;
 
 type Props = {|
-  info: UserInfo_info,
+  info: TodoList_info,
   relay: RelayProp,
 |};
 
@@ -48,7 +49,7 @@ type State = {|
   value: string,
 |};
 
-class UserInfo extends React.PureComponent<Props, State> {
+class TodoList extends React.PureComponent<Props, State> {
   state = { value: "" };
 
   handleChange = (ev: SyntheticEvent<HTMLInputElement>) => {
@@ -106,6 +107,7 @@ class UserInfo extends React.PureComponent<Props, State> {
         {info.countTodos > 0 && (
           <Footer>
             <TodoCount>{info.countTodos - info.countTodosComplete}</TodoCount>
+            <Filters />
           </Footer>
         )}
       </Section>
@@ -114,14 +116,15 @@ class UserInfo extends React.PureComponent<Props, State> {
 }
 
 export default createFragmentContainer(
-  UserInfo,
+  TodoList,
   graphql`
-    fragment UserInfo_info on User {
+    fragment TodoList_info on User {
       id
       countTodos
       countTodosComplete
       todos(
         first: 10000000 # A random big number
+        show: $show
       ) @connection(key: "TodoList_todos", filters: []) {
         edges {
           node {

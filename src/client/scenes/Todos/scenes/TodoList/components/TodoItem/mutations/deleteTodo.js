@@ -8,7 +8,7 @@ import type {
   deleteTodoMutationResponse,
 } from "./__generated__/deleteTodoMutation.graphql";
 import type { TodoItem_item } from "../__generated__/TodoItem_item.graphql";
-import type { UserInfo_info } from "../../../__generated__/UserInfo_info.graphql";
+import type { TodoList_info } from "../../../__generated__/TodoList_info.graphql";
 
 const mutation = graphql`
   mutation deleteTodoMutation($input: DeleteTodoInput!) {
@@ -24,7 +24,7 @@ const mutation = graphql`
   }
 `;
 
-function deleteTodo(environment: Environment, user: UserInfo_info, todo: TodoItem_item) {
+function deleteTodo(environment: Environment, user: TodoList_info, todo: TodoItem_item) {
   const mutationId = v4();
   const variables: deleteTodoMutationVariables = {
     input: {

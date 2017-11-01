@@ -7,7 +7,7 @@ import type {
   createTodoMutationVariables,
   createTodoMutationResponse,
 } from "./__generated__/createTodoMutation.graphql";
-import type { UserInfo_info } from "../__generated__/UserInfo_info.graphql";
+import type { TodoList_info } from "../__generated__/TodoList_info.graphql";
 
 const mutation = graphql`
   mutation createTodoMutation($input: CreateTodoInput!) {
@@ -29,7 +29,7 @@ const mutation = graphql`
   }
 `;
 
-function createTodo(environment: Environment, user: UserInfo_info, text: string) {
+function createTodo(environment: Environment, user: TodoList_info, text: string) {
   const mutationId = v4();
   const variables: createTodoMutationVariables = {
     input: {

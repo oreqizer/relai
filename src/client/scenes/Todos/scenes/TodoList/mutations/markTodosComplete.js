@@ -7,7 +7,7 @@ import type {
   markTodosCompleteMutationVariables,
   markTodosCompleteMutationResponse,
 } from "./__generated__/markTodosCompleteMutation.graphql";
-import type { UserInfo_info } from "../__generated__/UserInfo_info.graphql";
+import type { TodoList_info } from "../__generated__/TodoList_info.graphql";
 
 const mutation = graphql`
   mutation markTodosCompleteMutation($input: MarkTodosCompleteInput!) {
@@ -25,7 +25,7 @@ const mutation = graphql`
   }
 `;
 
-function markTodosComplete(environment: Environment, user: UserInfo_info, complete: boolean) {
+function markTodosComplete(environment: Environment, user: TodoList_info, complete: boolean) {
   const mutationId = v4();
   const variables: markTodosCompleteMutationVariables = {
     input: {

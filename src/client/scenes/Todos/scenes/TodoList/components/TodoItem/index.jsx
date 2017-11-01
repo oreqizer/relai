@@ -6,7 +6,7 @@ import type { RelayProp } from "react-relay";
 
 import Input from "client/components/Input/index";
 import type { TodoItem_item } from "./__generated__/TodoItem_item.graphql";
-import type { UserInfo_info } from "../../__generated__/UserInfo_info.graphql";
+import type { TodoList_info } from "../../__generated__/TodoList_info.graphql";
 import Toggle from "../Toggle/index";
 import deleteTodo from "./mutations/deleteTodo";
 import updateTodo from "./mutations/updateTodo";
@@ -75,7 +75,7 @@ const Destroy = styled.button`
 `;
 
 type Props = {|
-  user: UserInfo_info,
+  user: TodoList_info,
   item: TodoItem_item,
   relay: RelayProp,
 |};

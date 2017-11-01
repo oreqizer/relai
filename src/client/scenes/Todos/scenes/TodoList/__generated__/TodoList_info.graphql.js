@@ -8,7 +8,7 @@
 
 /*::
 import type {ConcreteFragment} from 'relay-runtime';
-export type UserInfo_info = {|
+export type TodoList_info = {|
   +id: string;
   +countTodos: number;
   +countTodosComplete: number;
@@ -25,7 +25,13 @@ export type UserInfo_info = {|
 
 
 const fragment /*: ConcreteFragment*/ = {
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "kind": "RootArgument",
+      "name": "show",
+      "type": "ShowType"
+    }
+  ],
   "kind": "Fragment",
   "metadata": {
     "connection": [
@@ -39,7 +45,7 @@ const fragment /*: ConcreteFragment*/ = {
       }
     ]
   },
-  "name": "UserInfo_info",
+  "name": "TodoList_info",
   "selections": [
     {
       "kind": "ScalarField",

@@ -8,7 +8,7 @@ import type {
   updateTodoMutationResponse,
 } from "./__generated__/updateTodoMutation.graphql";
 import type { TodoItem_item } from "../__generated__/TodoItem_item.graphql";
-import type { UserInfo_info } from "../../../__generated__/UserInfo_info.graphql";
+import type { TodoList_info } from "../../../__generated__/TodoList_info.graphql";
 
 const mutation = graphql`
   mutation updateTodoMutation($input: UpdateTodoInput!) {
@@ -40,7 +40,7 @@ function getCountDiff(oldTodo: TodoItem_item, newTodo: TodoItem_item) {
 
 function updateTodo(
   environment: Environment,
-  user: UserInfo_info,
+  user: TodoList_info,
   oldTodo: TodoItem_item,
   newTodo: TodoItem_item,
 ) {
