@@ -4,9 +4,10 @@ import { createFragmentContainer, graphql } from "react-relay";
 import styled, { css } from "styled-components";
 import type { RelayProp } from "react-relay";
 
-import Input from "client/components/Input";
+import Input from "client/components/Input/index";
 import type { TodoItem_item } from "./__generated__/TodoItem_item.graphql";
-import Toggle from "../Toggle";
+import type { UserInfo_info } from "../../__generated__/UserInfo_info.graphql";
+import Toggle from "../Toggle/index";
 import deleteTodo from "./mutations/deleteTodo";
 import updateTodo from "./mutations/updateTodo";
 
@@ -74,8 +75,8 @@ const Destroy = styled.button`
 `;
 
 type Props = {|
+  user: UserInfo_info,
   item: TodoItem_item,
-  userId: string,
   relay: RelayProp,
 |};
 
@@ -93,10 +94,10 @@ class TodoItem extends React.PureComponent<Props, State> {
   input: ?HTMLInputElement;
 
   handleToggle = (ev: SyntheticEvent<HTMLInputElement>) => {
-    const { item, userId, relay: { environment } } = this.props;
+    const { item, user, relay: { environment } } = this.props;
 
     if (ev.target instanceof HTMLInputElement) {
-      updateTodo(environment, userId, {
+      updateTodo(environment, user, item, {
         ...item,
         complete: ev.target.checked,
       });
@@ -124,12 +125,12 @@ class TodoItem extends React.PureComponent<Props, State> {
   };
 
   handleEdit = (ev: SyntheticEvent<HTMLInputElement>) => {
-    const { item, userId, relay: { environment } } = this.props;
+    const { item, user, relay: { environment } } = this.props;
 
     if (ev.target instanceof HTMLInputElement) {
       const { value } = ev.target;
       if (value !== item.text) {
-        updateTodo(environment, userId, {
+        updateTodo(environment, user, item, {
           ...item,
           text: value,
         });
@@ -140,9 +141,9 @@ class TodoItem extends React.PureComponent<Props, State> {
   };
 
   handleDestroy = () => {
-    const { item, userId, relay: { environment } } = this.props;
+    const { item, user, relay: { environment } } = this.props;
 
-    deleteTodo(environment, userId, item.id);
+    deleteTodo(environment, user, item);
   };
 
   render() {

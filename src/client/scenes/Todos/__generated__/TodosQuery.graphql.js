@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 320b44d6f12e2e393e42460388b14e91
+ * @relayHash 4f7fb8847f6bdbdb841e39f1f307ebf4
  */
 
 /* eslint-disable */
@@ -10,11 +10,7 @@
 /*::
 import type {ConcreteBatch} from 'relay-runtime';
 export type TodosQueryResponse = {|
-  +user: ?{|
-    +id: string;
-    +countTodos: number;
-    +countTodosComplete: number;
-  |};
+  +user: ?{| |};
 |};
 */
 
@@ -24,19 +20,21 @@ query TodosQuery(
   $user: String!
 ) {
   user(name: $user) {
+    ...UserInfo_info
     id
-    countTodos
-    countTodosComplete
-    ...TodoList_list
   }
 }
 
-fragment TodoList_list on User {
+fragment UserInfo_info on User {
+  id
+  countTodos
+  countTodosComplete
   todos(first: 10000000) {
     edges {
       node {
         __typename
         id
+        complete
         ...TodoItem_item
       }
       cursor
@@ -85,29 +83,8 @@ const batch /*: ConcreteBatch*/ = {
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
-            "alias": null,
-            "args": null,
-            "name": "id",
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "args": null,
-            "name": "countTodos",
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "args": null,
-            "name": "countTodosComplete",
-            "storageKey": null
-          },
-          {
             "kind": "FragmentSpread",
-            "name": "TodoList_list",
+            "name": "UserInfo_info",
             "args": null
           }
         ],
@@ -218,14 +195,14 @@ const batch /*: ConcreteBatch*/ = {
                         "kind": "ScalarField",
                         "alias": null,
                         "args": null,
-                        "name": "text",
+                        "name": "complete",
                         "storageKey": null
                       },
                       {
                         "kind": "ScalarField",
                         "alias": null,
                         "args": null,
-                        "name": "complete",
+                        "name": "text",
                         "storageKey": null
                       }
                     ],
@@ -290,7 +267,7 @@ const batch /*: ConcreteBatch*/ = {
       }
     ]
   },
-  "text": "query TodosQuery(\n  $user: String!\n) {\n  user(name: $user) {\n    id\n    countTodos\n    countTodosComplete\n    ...TodoList_list\n  }\n}\n\nfragment TodoList_list on User {\n  todos(first: 10000000) {\n    edges {\n      node {\n        __typename\n        id\n        ...TodoItem_item\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment TodoItem_item on Todo {\n  id\n  text\n  complete\n}\n"
+  "text": "query TodosQuery(\n  $user: String!\n) {\n  user(name: $user) {\n    ...UserInfo_info\n    id\n  }\n}\n\nfragment UserInfo_info on User {\n  id\n  countTodos\n  countTodosComplete\n  todos(first: 10000000) {\n    edges {\n      node {\n        __typename\n        id\n        complete\n        ...TodoItem_item\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment TodoItem_item on Todo {\n  id\n  text\n  complete\n}\n"
 };
 
 module.exports = batch;

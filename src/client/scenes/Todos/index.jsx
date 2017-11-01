@@ -3,7 +3,7 @@ import React from "react";
 import { QueryRenderer, graphql } from "react-relay";
 
 import Title from "client/components/Title";
-import TodoList from "./components/TodoList";
+import UserInfo from "./scenes/UserInfo";
 import environment from "./services/environment";
 
 type Props = {|
@@ -18,10 +18,7 @@ const Todos = (props: Props) => (
       query={graphql`
         query TodosQuery($user: String!) {
           user(name: $user) {
-            id
-            countTodos
-            countTodosComplete
-            ...TodoList_list
+            ...UserInfo_info
           }
         }
       `}
@@ -33,14 +30,7 @@ const Todos = (props: Props) => (
         }
 
         if (res.props) {
-          return (
-            <TodoList
-              list={res.props.user}
-              userId={res.props.user.id}
-              todosAll={res.props.user.countTodos}
-              todosComplete={res.props.user.countTodosComplete}
-            />
-          );
+          return <UserInfo info={res.props.user} />;
         }
 
         return null;

@@ -5,9 +5,10 @@ import { createFragmentContainer, graphql } from "react-relay";
 import type { RelayProp } from "react-relay";
 
 import Input from "client/components/Input";
-import type { TodoList_list } from "./__generated__/TodoList_list.graphql";
-import TodoItem from "../TodoItem";
-import ToggleAll from "../ToggleAll";
+import Footer from "client/components/Footer";
+import type { UserInfo_info } from "./__generated__/UserInfo_info.graphql";
+import TodoItem from "./components/TodoItem/index";
+import ToggleAll from "./components/ToggleAll/index";
 import createTodo from "./mutations/createTodo";
 import markTodosComplete from "./mutations/markTodosComplete";
 
@@ -34,22 +35,19 @@ const Main = styled.section`
 const Ul = styled.ul`
   margin: 0;
   padding: 0;
-  list-style: none;
+  data-style: none;
 `;
 
 type Props = {|
-  userId: string,
-  list: TodoList_list,
+  info: UserInfo_info,
   relay: RelayProp,
-  todosAll: number,
-  todosComplete: number,
 |};
 
 type State = {|
   value: string,
 |};
 
-class TodoList extends React.PureComponent<Props, State> {
+class UserInfo extends React.PureComponent<Props, State> {
   state = { value: "" };
 
   handleChange = (ev: SyntheticEvent<HTMLInputElement>) => {
@@ -59,27 +57,27 @@ class TodoList extends React.PureComponent<Props, State> {
   };
 
   handleKeyPress = (ev: SyntheticEvent<HTMLInputElement>) => {
-    const { userId, relay: { environment } } = this.props;
+    const { info, relay: { environment } } = this.props;
 
     if (ev.key === "Enter" && ev.target instanceof HTMLInputElement) {
-      createTodo(environment, userId, ev.target.value);
+      createTodo(environment, info, ev.target.value);
       this.setState({ value: "" });
     }
   };
 
   handleToggleAll = (ev: SyntheticEvent<HTMLInputElement>) => {
-    const { userId, relay: { environment } } = this.props;
+    const { info, relay: { environment } } = this.props;
 
     if (ev.target instanceof HTMLInputElement) {
-      markTodosComplete(environment, userId, ev.target.checked);
+      markTodosComplete(environment, info, ev.target.checked);
     }
   };
 
   render() {
     const { value } = this.state;
-    const { list, userId, todosAll, todosComplete } = this.props;
+    const { info } = this.props;
 
-    if (!list.todos || !list.todos.edges) {
+    if (!info.todos || !info.todos.edges) {
       return null;
     }
 
@@ -94,31 +92,36 @@ class TodoList extends React.PureComponent<Props, State> {
           />
           <Main>
             <ToggleAll
-              checked={todosAll > 0 && todosAll === todosComplete}
+              checked={info.countTodos > 0 && info.countTodos === info.countTodosComplete}
               onChange={this.handleToggleAll}
             />
             <Ul>
-              {list.todos.edges
-                .filter(edge => edge.node !== null)
-                .map(({ node }) => <TodoItem key={node.id} item={node} userId={userId} />)}
+              {info.todos.edges
+                .filter(Boolean)
+                .map(({ node }) => node && <TodoItem key={node.id} item={node} user={info} />)}
             </Ul>
           </Main>
         </header>
+        <Footer />
       </Section>
     );
   }
 }
 
 export default createFragmentContainer(
-  TodoList,
+  UserInfo,
   graphql`
-    fragment TodoList_list on User {
+    fragment UserInfo_info on User {
+      id
+      countTodos
+      countTodosComplete
       todos(
         first: 10000000 # A random big number
       ) @connection(key: "TodoList_todos", filters: []) {
         edges {
           node {
             id
+            complete
             ...TodoItem_item
           }
         }

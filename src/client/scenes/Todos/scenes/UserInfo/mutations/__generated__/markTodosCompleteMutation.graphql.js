@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash b7f3fd745b66d96847eb66826d75fb37
+ * @relayHash d161dca5e77ee5a64bb8d1cf74945c78
  */
 
 /* eslint-disable */
@@ -9,28 +9,21 @@
 
 /*::
 import type {ConcreteBatch} from 'relay-runtime';
-export type updateTodoMutationVariables = {|
+export type markTodosCompleteMutationVariables = {|
   input: {
     userId: string;
-    id: string;
-    text: string;
     complete: boolean;
     clientMutationId?: ?string;
   };
 |};
-export type updateTodoMutationResponse = {|
-  +updateTodo: ?{|
-    +todoEdge: ?{|
-      +cursor: string;
-      +node: ?{|
-        +id: string;
-        +text: string;
-        +complete: boolean;
-      |};
-    |};
+export type markTodosCompleteMutationResponse = {|
+  +markTodosComplete: ?{|
+    +updatedTodos: $ReadOnlyArray<?{|
+      +id: string;
+      +complete: boolean;
+    |}>;
     +user: {|
       +id: string;
-      +countTodos: number;
       +countTodosComplete: number;
     |};
     +clientMutationId: ?string;
@@ -40,21 +33,16 @@ export type updateTodoMutationResponse = {|
 
 
 /*
-mutation updateTodoMutation(
-  $input: UpdateTodoInput!
+mutation markTodosCompleteMutation(
+  $input: MarkTodosCompleteInput!
 ) {
-  updateTodo(input: $input) {
-    todoEdge {
-      cursor
-      node {
-        id
-        text
-        complete
-      }
+  markTodosComplete(input: $input) {
+    updatedTodos {
+      id
+      complete
     }
     user {
       id
-      countTodos
       countTodosComplete
     }
     clientMutationId
@@ -68,13 +56,13 @@ const batch /*: ConcreteBatch*/ = {
       {
         "kind": "LocalArgument",
         "name": "input",
-        "type": "UpdateTodoInput!",
+        "type": "MarkTodosCompleteInput!",
         "defaultValue": null
       }
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "updateTodoMutation",
+    "name": "markTodosCompleteMutation",
     "selections": [
       {
         "kind": "LinkedField",
@@ -84,58 +72,33 @@ const batch /*: ConcreteBatch*/ = {
             "kind": "Variable",
             "name": "input",
             "variableName": "input",
-            "type": "UpdateTodoInput!"
+            "type": "MarkTodosCompleteInput!"
           }
         ],
-        "concreteType": "UpdateTodoPayload",
-        "name": "updateTodo",
+        "concreteType": "MarkTodosCompletePayload",
+        "name": "markTodosComplete",
         "plural": false,
         "selections": [
           {
             "kind": "LinkedField",
             "alias": null,
             "args": null,
-            "concreteType": "TodoEdge",
-            "name": "todoEdge",
-            "plural": false,
+            "concreteType": "Todo",
+            "name": "updatedTodos",
+            "plural": true,
             "selections": [
               {
                 "kind": "ScalarField",
                 "alias": null,
                 "args": null,
-                "name": "cursor",
+                "name": "id",
                 "storageKey": null
               },
               {
-                "kind": "LinkedField",
+                "kind": "ScalarField",
                 "alias": null,
                 "args": null,
-                "concreteType": "Todo",
-                "name": "node",
-                "plural": false,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "args": null,
-                    "name": "id",
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "args": null,
-                    "name": "text",
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "args": null,
-                    "name": "complete",
-                    "storageKey": null
-                  }
-                ],
+                "name": "complete",
                 "storageKey": null
               }
             ],
@@ -154,13 +117,6 @@ const batch /*: ConcreteBatch*/ = {
                 "alias": null,
                 "args": null,
                 "name": "id",
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "args": null,
-                "name": "countTodos",
                 "storageKey": null
               },
               {
@@ -189,18 +145,18 @@ const batch /*: ConcreteBatch*/ = {
   "id": null,
   "kind": "Batch",
   "metadata": {},
-  "name": "updateTodoMutation",
+  "name": "markTodosCompleteMutation",
   "query": {
     "argumentDefinitions": [
       {
         "kind": "LocalArgument",
         "name": "input",
-        "type": "UpdateTodoInput!",
+        "type": "MarkTodosCompleteInput!",
         "defaultValue": null
       }
     ],
     "kind": "Root",
-    "name": "updateTodoMutation",
+    "name": "markTodosCompleteMutation",
     "operation": "mutation",
     "selections": [
       {
@@ -211,58 +167,33 @@ const batch /*: ConcreteBatch*/ = {
             "kind": "Variable",
             "name": "input",
             "variableName": "input",
-            "type": "UpdateTodoInput!"
+            "type": "MarkTodosCompleteInput!"
           }
         ],
-        "concreteType": "UpdateTodoPayload",
-        "name": "updateTodo",
+        "concreteType": "MarkTodosCompletePayload",
+        "name": "markTodosComplete",
         "plural": false,
         "selections": [
           {
             "kind": "LinkedField",
             "alias": null,
             "args": null,
-            "concreteType": "TodoEdge",
-            "name": "todoEdge",
-            "plural": false,
+            "concreteType": "Todo",
+            "name": "updatedTodos",
+            "plural": true,
             "selections": [
               {
                 "kind": "ScalarField",
                 "alias": null,
                 "args": null,
-                "name": "cursor",
+                "name": "id",
                 "storageKey": null
               },
               {
-                "kind": "LinkedField",
+                "kind": "ScalarField",
                 "alias": null,
                 "args": null,
-                "concreteType": "Todo",
-                "name": "node",
-                "plural": false,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "args": null,
-                    "name": "id",
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "args": null,
-                    "name": "text",
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "args": null,
-                    "name": "complete",
-                    "storageKey": null
-                  }
-                ],
+                "name": "complete",
                 "storageKey": null
               }
             ],
@@ -287,13 +218,6 @@ const batch /*: ConcreteBatch*/ = {
                 "kind": "ScalarField",
                 "alias": null,
                 "args": null,
-                "name": "countTodos",
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "args": null,
                 "name": "countTodosComplete",
                 "storageKey": null
               }
@@ -312,7 +236,7 @@ const batch /*: ConcreteBatch*/ = {
       }
     ]
   },
-  "text": "mutation updateTodoMutation(\n  $input: UpdateTodoInput!\n) {\n  updateTodo(input: $input) {\n    todoEdge {\n      cursor\n      node {\n        id\n        text\n        complete\n      }\n    }\n    user {\n      id\n      countTodos\n      countTodosComplete\n    }\n    clientMutationId\n  }\n}\n"
+  "text": "mutation markTodosCompleteMutation(\n  $input: MarkTodosCompleteInput!\n) {\n  markTodosComplete(input: $input) {\n    updatedTodos {\n      id\n      complete\n    }\n    user {\n      id\n      countTodosComplete\n    }\n    clientMutationId\n  }\n}\n"
 };
 
 module.exports = batch;

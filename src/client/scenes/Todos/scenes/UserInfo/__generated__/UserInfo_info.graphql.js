@@ -8,11 +8,15 @@
 
 /*::
 import type {ConcreteFragment} from 'relay-runtime';
-export type TodoList_list = {|
+export type UserInfo_info = {|
+  +id: string;
+  +countTodos: number;
+  +countTodosComplete: number;
   +todos: ?{|
     +edges: ?$ReadOnlyArray<?{|
       +node: ?{|
         +id: string;
+        +complete: boolean;
       |};
     |}>;
   |};
@@ -35,8 +39,29 @@ const fragment /*: ConcreteFragment*/ = {
       }
     ]
   },
-  "name": "TodoList_list",
+  "name": "UserInfo_info",
   "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "args": null,
+      "name": "id",
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "args": null,
+      "name": "countTodos",
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "args": null,
+      "name": "countTodosComplete",
+      "storageKey": null
+    },
     {
       "kind": "LinkedField",
       "alias": "todos",
@@ -66,6 +91,13 @@ const fragment /*: ConcreteFragment*/ = {
                   "alias": null,
                   "args": null,
                   "name": "id",
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "args": null,
+                  "name": "complete",
                   "storageKey": null
                 },
                 {

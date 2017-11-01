@@ -3,7 +3,11 @@ import { commitMutation, graphql } from "react-relay";
 import type { Environment } from "react-relay";
 import v4 from "uuid/v4";
 
-import type { createTodoMutationVariables } from "./__generated__/createTodoMutation.graphql";
+import type {
+  createTodoMutationVariables,
+  createTodoMutationResponse,
+} from "./__generated__/createTodoMutation.graphql";
+import type { UserInfo_info } from "../__generated__/UserInfo_info.graphql";
 
 const mutation = graphql`
   mutation createTodoMutation($input: CreateTodoInput!) {
@@ -25,39 +29,42 @@ const mutation = graphql`
   }
 `;
 
-function createTodo(environment: Environment, userId: string, text: string) {
+function createTodo(environment: Environment, user: UserInfo_info, text: string) {
   const mutationId = v4();
   const variables: createTodoMutationVariables = {
     input: {
-      userId,
+      userId: user.id,
       text,
       clientMutationId: mutationId,
     },
   };
 
-  // TODO user counts
-  // const optimisticResponse: createTodoMutationResponse = {
-  //   createTodo: {
-  //     todoEdge: {
-  //       cursor: mutationId,
-  //       node: {
-  //         id: mutationId,
-  //         text,
-  //         complete: false,
-  //       },
-  //     },
-  //     clientMutationId: mutationId,
-  //   },
-  // },
+  const optimisticResponse: createTodoMutationResponse = {
+    createTodo: {
+      todoEdge: {
+        cursor: mutationId,
+        node: {
+          id: mutationId,
+          text,
+          complete: false,
+        },
+      },
+      user: {
+        id: user.id,
+        countTodos: user.countTodos + 1,
+      },
+      clientMutationId: mutationId,
+    },
+  };
 
   commitMutation(environment, {
     mutation,
     variables,
-    // optimisticResponse,
+    optimisticResponse,
     configs: [
       {
         type: "RANGE_ADD",
-        parentID: userId,
+        parentID: user.id,
         connectionInfo: [
           {
             key: "TodoList_todos",
