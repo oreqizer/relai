@@ -2,7 +2,6 @@
 import * as React from "react";
 
 import Input from "client/components/Input";
-import Footer from "client/components/Footer";
 import Title from "client/components/Title";
 
 type Props = {|
@@ -36,7 +35,6 @@ class UserInput extends React.PureComponent<Props> {
           onChange={this.handleChange}
           onKeyPress={this.handleKeyPress}
         />
-        <Footer />
       </div>
     );
   }
