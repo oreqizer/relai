@@ -5,6 +5,13 @@ A small project for trying out GraphQL and Relay. :grapes:
 * Demo running on [Heroku](http://relai.herokuapp.com)
 * Check out the [GraphQL](https://github.com/oreqizer/relai-graphql)
 
+## Stack
+
+* React
+* Relay modern
+* Styled components
+* Flow
+
 ## Notes
 
 Run `heroku config:set NPM_CONFIG_PRODUCTION=false` when deploying to Heroku.
