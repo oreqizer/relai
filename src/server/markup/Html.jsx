@@ -12,8 +12,9 @@ type Props = {
 const Html = (props: Props) => (
   <html lang="en">
     <head>
-      <title>Reactizer</title>
+      <title>Relai</title>
       <meta charSet="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
 
       <link href={assets.vendor.css} rel="stylesheet" />
       <link href={assets.bundle.css} rel="stylesheet" />
