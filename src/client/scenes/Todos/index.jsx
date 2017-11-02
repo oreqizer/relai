@@ -57,7 +57,7 @@ class Todos extends React.Component<Props, State> {
               }
             }
           `}
-          variables={{ user, show }}
+          variables={{ user }}
           render={res => {
             if (res.error) {
               // TODO proper error
