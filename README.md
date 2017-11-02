@@ -2,17 +2,8 @@
 
 A small project for trying out GraphQL and Relay. :grapes:
 
+* Demo running on [Heroku](http://relai.herokuapp.com)
 * Check out the [GraphQL](https://github.com/oreqizer/relai-graphql)
-
-## TODO
-
-- [x] Use `graphql-relay`
-- [x] Check/uncheck all
-- [x] Todos count
-- [x] Footer
-- [x] Filters
-- [x] Clear complete
-- [ ] Pagination
 
 ## Notes
 
