@@ -30,6 +30,7 @@ class UserInput extends React.PureComponent<Props> {
       <div>
         <Title>user</Title>
         <Input
+          data-creepx={JSON.stringify({ target: "user input", value })}
           value={value}
           placeholder="Your username"
           onChange={this.handleChange}

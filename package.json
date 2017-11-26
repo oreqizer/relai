@@ -33,6 +33,7 @@
   "author": "oreqizer",
   "license": "MIT",
   "dependencies": {
+    "creepx": "^0.3.1",
     "koa": "^2.3.0",
     "koa-logger": "^3.1.0",
     "koa-static": "^4.0.1",

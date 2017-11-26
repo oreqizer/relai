@@ -27,10 +27,11 @@ type Props = {|
   id: string,
   checked: boolean,
   onChange: (SyntheticEvent<HTMLInputElement>) => any,
+  track?: string,
 |};
 
 const Toggle = (props: Props) => (
-  <label htmlFor={props.id}>
+  <label htmlFor={props.id} data-creepx={props.track}>
     <Checkbox id={props.id} type="checkbox" checked={props.checked} onChange={props.onChange} />
   </label>
 );

@@ -37,13 +37,25 @@ const Link = styled.a`
 const Filters = () => (
   <Ul>
     <Li>
-      <Link href="/#" selected={window.location.hash === ""}>
+      <Link
+        data-creepx={JSON.stringify({ filter: "all" })}
+        href="/#"
+        selected={window.location.hash === ""}
+      >
         All
       </Link>
-      <Link href="/#active" selected={window.location.hash === "#active"}>
+      <Link
+        data-creepx={JSON.stringify({ filter: "active" })}
+        href="/#active"
+        selected={window.location.hash === "#active"}
+      >
         Active
       </Link>
-      <Link href="/#complete" selected={window.location.hash === "#complete"}>
+      <Link
+        data-creepx={JSON.stringify({ filter: "complete" })}
+        href="/#complete"
+        selected={window.location.hash === "#complete"}
+      >
         Complete
       </Link>
     </Li>

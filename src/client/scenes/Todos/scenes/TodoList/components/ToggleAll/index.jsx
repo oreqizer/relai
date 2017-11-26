@@ -33,7 +33,11 @@ type Props = {|
 |};
 
 const ToggleAll = (props: Props) => (
-  <Label htmlFor="toggleAll" checked={props.checked}>
+  <Label
+    htmlFor="toggleAll"
+    checked={props.checked}
+    data-creepx={JSON.stringify({ action: "toggle all" })}
+  >
     <Checkbox id="toggleAll" type="checkbox" checked={props.checked} onChange={props.onChange} />
   </Label>
 );

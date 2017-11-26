@@ -123,6 +123,7 @@ class TodoList extends React.PureComponent<Props, State> {
         <header>
           <NewTodoInput
             value={value}
+            data-creepx={JSON.stringify({ target: "new todo", value })}
             placeholder="What needs to be done?"
             onChange={this.handleChange}
             onKeyPress={this.handleKeyPress}
@@ -140,7 +141,12 @@ class TodoList extends React.PureComponent<Props, State> {
             <TodoCount>{info.countTodos - info.countTodosComplete}</TodoCount>
             <Filters />
             {info.countTodosComplete > 0 && (
-              <Button onClick={this.handleClearCompleted}>Clear completed</Button>
+              <Button
+                data-creepx={JSON.stringify({ action: "clear complete" })}
+                onClick={this.handleClearCompleted}
+              >
+                Clear completed
+              </Button>
             )}
           </Footer>
         )}

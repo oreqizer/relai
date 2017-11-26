@@ -156,6 +156,7 @@ class TodoItem extends React.PureComponent<Props, State> {
           <EditInput
             id={item.id}
             value={value}
+            data-creepx={JSON.stringify({ target: "edit todo", value })}
             innerRef={node => {
               this.input = node;
             }}
@@ -165,11 +166,24 @@ class TodoItem extends React.PureComponent<Props, State> {
           />
         ) : (
           <div>
-            <Toggle id={`${item.id}-toggle`} checked={item.complete} onChange={this.handleToggle} />
-            <Label htmlFor={item.id} complete={item.complete} onClick={this.handleInitEdit}>
+            <Toggle
+              id={`${item.id}-toggle`}
+              checked={item.complete}
+              onChange={this.handleToggle}
+              track={JSON.stringify({ action: "toggle", item })}
+            />
+            <Label
+              data-creepx={JSON.stringify({ action: "edit", item })}
+              htmlFor={item.id}
+              complete={item.complete}
+              onClick={this.handleInitEdit}
+            >
               {item.text}
             </Label>
-            <Destroy onClick={this.handleDestroy} />
+            <Destroy
+              data-creepx={JSON.stringify({ action: "destroy", item })}
+              onClick={this.handleDestroy}
+            />
           </div>
         )}
       </Li>
